@@ -1,0 +1,325 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		99A9EE621F4EA456001388DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE611F4EA456001388DB /* AppDelegate.swift */; };
+		99A9EE641F4EA456001388DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE631F4EA456001388DB /* ViewController.swift */; };
+		99A9EE671F4EA456001388DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99A9EE651F4EA456001388DB /* Main.storyboard */; };
+		99A9EE6A1F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE681F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld */; };
+		99A9EE6C1F4EA456001388DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99A9EE6B1F4EA456001388DB /* Assets.xcassets */; };
+		99A9EE6F1F4EA456001388DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99A9EE6D1F4EA456001388DB /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		99A9EE5E1F4EA456001388DB /* TaipeiZooJSON.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaipeiZooJSON.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		99A9EE611F4EA456001388DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		99A9EE631F4EA456001388DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		99A9EE661F4EA456001388DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		99A9EE691F4EA456001388DB /* TaipeiZooJSON.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaipeiZooJSON.xcdatamodel; sourceTree = "<group>"; };
+		99A9EE6B1F4EA456001388DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		99A9EE6E1F4EA456001388DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		99A9EE701F4EA456001388DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		99A9EE5B1F4EA456001388DB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		99A9EE551F4EA456001388DB = {
+			isa = PBXGroup;
+			children = (
+				99A9EE601F4EA456001388DB /* TaipeiZooJSON */,
+				99A9EE5F1F4EA456001388DB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		99A9EE5F1F4EA456001388DB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				99A9EE5E1F4EA456001388DB /* TaipeiZooJSON.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		99A9EE601F4EA456001388DB /* TaipeiZooJSON */ = {
+			isa = PBXGroup;
+			children = (
+				99A9EE611F4EA456001388DB /* AppDelegate.swift */,
+				99A9EE631F4EA456001388DB /* ViewController.swift */,
+				99A9EE651F4EA456001388DB /* Main.storyboard */,
+				99A9EE6B1F4EA456001388DB /* Assets.xcassets */,
+				99A9EE6D1F4EA456001388DB /* LaunchScreen.storyboard */,
+				99A9EE701F4EA456001388DB /* Info.plist */,
+				99A9EE681F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld */,
+			);
+			path = TaipeiZooJSON;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		99A9EE5D1F4EA456001388DB /* TaipeiZooJSON */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 99A9EE731F4EA456001388DB /* Build configuration list for PBXNativeTarget "TaipeiZooJSON" */;
+			buildPhases = (
+				99A9EE5A1F4EA456001388DB /* Sources */,
+				99A9EE5B1F4EA456001388DB /* Frameworks */,
+				99A9EE5C1F4EA456001388DB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TaipeiZooJSON;
+			productName = TaipeiZooJSON;
+			productReference = 99A9EE5E1F4EA456001388DB /* TaipeiZooJSON.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		99A9EE561F4EA456001388DB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = CliffC;
+				TargetAttributes = {
+					99A9EE5D1F4EA456001388DB = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 99A9EE591F4EA456001388DB /* Build configuration list for PBXProject "TaipeiZooJSON" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 99A9EE551F4EA456001388DB;
+			productRefGroup = 99A9EE5F1F4EA456001388DB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				99A9EE5D1F4EA456001388DB /* TaipeiZooJSON */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		99A9EE5C1F4EA456001388DB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				99A9EE6F1F4EA456001388DB /* LaunchScreen.storyboard in Resources */,
+				99A9EE6C1F4EA456001388DB /* Assets.xcassets in Resources */,
+				99A9EE671F4EA456001388DB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		99A9EE5A1F4EA456001388DB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				99A9EE641F4EA456001388DB /* ViewController.swift in Sources */,
+				99A9EE621F4EA456001388DB /* AppDelegate.swift in Sources */,
+				99A9EE6A1F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		99A9EE651F4EA456001388DB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				99A9EE661F4EA456001388DB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		99A9EE6D1F4EA456001388DB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				99A9EE6E1F4EA456001388DB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		99A9EE711F4EA456001388DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		99A9EE721F4EA456001388DB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		99A9EE741F4EA456001388DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TaipeiZooJSON/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cliffc.TaipeiZooJSON;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		99A9EE751F4EA456001388DB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TaipeiZooJSON/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.cliffc.TaipeiZooJSON;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		99A9EE591F4EA456001388DB /* Build configuration list for PBXProject "TaipeiZooJSON" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99A9EE711F4EA456001388DB /* Debug */,
+				99A9EE721F4EA456001388DB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		99A9EE731F4EA456001388DB /* Build configuration list for PBXNativeTarget "TaipeiZooJSON" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99A9EE741F4EA456001388DB /* Debug */,
+				99A9EE751F4EA456001388DB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		99A9EE681F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				99A9EE691F4EA456001388DB /* TaipeiZooJSON.xcdatamodel */,
+			);
+			currentVersion = 99A9EE691F4EA456001388DB /* TaipeiZooJSON.xcdatamodel */;
+			path = TaipeiZooJSON.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 99A9EE561F4EA456001388DB /* Project object */;
+}

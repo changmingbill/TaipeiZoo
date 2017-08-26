@@ -7,23 +7,51 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		532552EE1A94946F434022B9 /* Pods_TaipeiZooJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88188D4D8DD16970B1DE2853 /* Pods_TaipeiZooJSON.framework */; };
 		99A9EE621F4EA456001388DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE611F4EA456001388DB /* AppDelegate.swift */; };
-		99A9EE641F4EA456001388DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE631F4EA456001388DB /* ViewController.swift */; };
 		99A9EE671F4EA456001388DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99A9EE651F4EA456001388DB /* Main.storyboard */; };
 		99A9EE6A1F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE681F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld */; };
 		99A9EE6C1F4EA456001388DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 99A9EE6B1F4EA456001388DB /* Assets.xcassets */; };
 		99A9EE6F1F4EA456001388DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99A9EE6D1F4EA456001388DB /* LaunchScreen.storyboard */; };
+		99A9EE771F4EA62A001388DB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 99A9EE761F4EA62A001388DB /* GoogleService-Info.plist */; };
+		99A9EE7B1F4EA6F4001388DB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE7A1F4EA6F4001388DB /* Extensions.swift */; };
+		99A9EE941F4EBE58001388DB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE921F4EBE58001388DB /* Reachability.m */; };
+		99A9EE981F4EC16B001388DB /* AnimalsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE971F4EC16B001388DB /* AnimalsViewController.swift */; };
+		99A9EE9B1F4EC4BC001388DB /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE9A1F4EC4BC001388DB /* Animal.swift */; };
+		99A9EE9D1F4ECEC3001388DB /* AnimalsViewController+handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EE9C1F4ECEC3001388DB /* AnimalsViewController+handler.swift */; };
+		99A9EEA61F4F02D9001388DB /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEA51F4F02D9001388DB /* UserCell.swift */; };
+		99A9EEA81F4FEEAA001388DB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEA71F4FEEAA001388DB /* User.swift */; };
+		99A9EEAB1F4FF12F001388DB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEA91F4FF12F001388DB /* LoginController.swift */; };
+		99A9EEAC1F4FF12F001388DB /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEAA1F4FF12F001388DB /* LoginController+handlers.swift */; };
+		99A9EEAE1F505063001388DB /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEAD1F505062001388DB /* InformationViewController.swift */; };
+		99A9EEB01F505130001388DB /* InformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEAF1F505130001388DB /* InformationCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		88188D4D8DD16970B1DE2853 /* Pods_TaipeiZooJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaipeiZooJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99A9EE5E1F4EA456001388DB /* TaipeiZooJSON.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaipeiZooJSON.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99A9EE611F4EA456001388DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		99A9EE631F4EA456001388DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		99A9EE661F4EA456001388DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		99A9EE691F4EA456001388DB /* TaipeiZooJSON.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaipeiZooJSON.xcdatamodel; sourceTree = "<group>"; };
 		99A9EE6B1F4EA456001388DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		99A9EE6E1F4EA456001388DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		99A9EE701F4EA456001388DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		99A9EE761F4EA62A001388DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		99A9EE7A1F4EA6F4001388DB /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		99A9EE911F4EBE57001388DB /* TaipeiZooJSON-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TaipeiZooJSON-Bridging-Header.h"; sourceTree = "<group>"; };
+		99A9EE921F4EBE58001388DB /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		99A9EE931F4EBE58001388DB /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		99A9EE971F4EC16B001388DB /* AnimalsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimalsViewController.swift; sourceTree = "<group>"; };
+		99A9EE9A1F4EC4BC001388DB /* Animal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animal.swift; sourceTree = "<group>"; };
+		99A9EE9C1F4ECEC3001388DB /* AnimalsViewController+handler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AnimalsViewController+handler.swift"; sourceTree = "<group>"; };
+		99A9EEA51F4F02D9001388DB /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		99A9EEA71F4FEEAA001388DB /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		99A9EEA91F4FF12F001388DB /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		99A9EEAA1F4FF12F001388DB /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
+		99A9EEAD1F505062001388DB /* InformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
+		99A9EEAF1F505130001388DB /* InformationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationCell.swift; sourceTree = "<group>"; };
+		B6F74B31AF1AF0F6B5AB4FE4 /* Pods-TaipeiZooJSON.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaipeiZooJSON.release.xcconfig"; path = "Pods/Target Support Files/Pods-TaipeiZooJSON/Pods-TaipeiZooJSON.release.xcconfig"; sourceTree = "<group>"; };
+		C1CC6A7C48F608F3D6B915EC /* Pods-TaipeiZooJSON.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaipeiZooJSON.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TaipeiZooJSON/Pods-TaipeiZooJSON.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +59,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				532552EE1A94946F434022B9 /* Pods_TaipeiZooJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		508E58E65ADC88328C2FB3FC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C1CC6A7C48F608F3D6B915EC /* Pods-TaipeiZooJSON.debug.xcconfig */,
+				B6F74B31AF1AF0F6B5AB4FE4 /* Pods-TaipeiZooJSON.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8374E5D8028232DC98E26307 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				88188D4D8DD16970B1DE2853 /* Pods_TaipeiZooJSON.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		99A9EE551F4EA456001388DB = {
 			isa = PBXGroup;
 			children = (
 				99A9EE601F4EA456001388DB /* TaipeiZooJSON */,
 				99A9EE5F1F4EA456001388DB /* Products */,
+				508E58E65ADC88328C2FB3FC /* Pods */,
+				8374E5D8028232DC98E26307 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +104,60 @@
 		99A9EE601F4EA456001388DB /* TaipeiZooJSON */ = {
 			isa = PBXGroup;
 			children = (
+				99A9EEA41F4F02C2001388DB /* View */,
+				99A9EE991F4EC4A1001388DB /* Models */,
+				99A9EE7C1F4EA701001388DB /* Helpers */,
+				99A9EE961F4EC119001388DB /* Controllers */,
 				99A9EE611F4EA456001388DB /* AppDelegate.swift */,
-				99A9EE631F4EA456001388DB /* ViewController.swift */,
 				99A9EE651F4EA456001388DB /* Main.storyboard */,
 				99A9EE6B1F4EA456001388DB /* Assets.xcassets */,
 				99A9EE6D1F4EA456001388DB /* LaunchScreen.storyboard */,
 				99A9EE701F4EA456001388DB /* Info.plist */,
+				99A9EE761F4EA62A001388DB /* GoogleService-Info.plist */,
 				99A9EE681F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld */,
+				99A9EE921F4EBE58001388DB /* Reachability.m */,
+				99A9EE931F4EBE58001388DB /* Reachability.h */,
+				99A9EE911F4EBE57001388DB /* TaipeiZooJSON-Bridging-Header.h */,
 			);
 			path = TaipeiZooJSON;
+			sourceTree = "<group>";
+		};
+		99A9EE7C1F4EA701001388DB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				99A9EE7A1F4EA6F4001388DB /* Extensions.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		99A9EE961F4EC119001388DB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				99A9EEA91F4FF12F001388DB /* LoginController.swift */,
+				99A9EEAA1F4FF12F001388DB /* LoginController+handlers.swift */,
+				99A9EE971F4EC16B001388DB /* AnimalsViewController.swift */,
+				99A9EE9C1F4ECEC3001388DB /* AnimalsViewController+handler.swift */,
+				99A9EEAD1F505062001388DB /* InformationViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		99A9EE991F4EC4A1001388DB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				99A9EEA71F4FEEAA001388DB /* User.swift */,
+				99A9EE9A1F4EC4BC001388DB /* Animal.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		99A9EEA41F4F02C2001388DB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				99A9EEA51F4F02D9001388DB /* UserCell.swift */,
+				99A9EEAF1F505130001388DB /* InformationCell.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +167,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 99A9EE731F4EA456001388DB /* Build configuration list for PBXNativeTarget "TaipeiZooJSON" */;
 			buildPhases = (
+				9D567C572CDDBC79E24DDDC6 /* [CP] Check Pods Manifest.lock */,
 				99A9EE5A1F4EA456001388DB /* Sources */,
 				99A9EE5B1F4EA456001388DB /* Frameworks */,
 				99A9EE5C1F4EA456001388DB /* Resources */,
+				F0E8A63CBCB98927DC50D3AF /* [CP] Embed Pods Frameworks */,
+				8AC8903A3ED510404BE194F1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -99,6 +195,7 @@
 				TargetAttributes = {
 					99A9EE5D1F4EA456001388DB = {
 						CreatedOnToolsVersion = 8.3.2;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -127,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				99A9EE6F1F4EA456001388DB /* LaunchScreen.storyboard in Resources */,
+				99A9EE771F4EA62A001388DB /* GoogleService-Info.plist in Resources */,
 				99A9EE6C1F4EA456001388DB /* Assets.xcassets in Resources */,
 				99A9EE671F4EA456001388DB /* Main.storyboard in Resources */,
 			);
@@ -134,14 +232,72 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		8AC8903A3ED510404BE194F1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TaipeiZooJSON/Pods-TaipeiZooJSON-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9D567C572CDDBC79E24DDDC6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F0E8A63CBCB98927DC50D3AF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TaipeiZooJSON/Pods-TaipeiZooJSON-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		99A9EE5A1F4EA456001388DB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99A9EE641F4EA456001388DB /* ViewController.swift in Sources */,
+				99A9EEA61F4F02D9001388DB /* UserCell.swift in Sources */,
+				99A9EE981F4EC16B001388DB /* AnimalsViewController.swift in Sources */,
+				99A9EE9B1F4EC4BC001388DB /* Animal.swift in Sources */,
 				99A9EE621F4EA456001388DB /* AppDelegate.swift in Sources */,
 				99A9EE6A1F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld in Sources */,
+				99A9EEA81F4FEEAA001388DB /* User.swift in Sources */,
+				99A9EEAC1F4FF12F001388DB /* LoginController+handlers.swift in Sources */,
+				99A9EE7B1F4EA6F4001388DB /* Extensions.swift in Sources */,
+				99A9EE941F4EBE58001388DB /* Reachability.m in Sources */,
+				99A9EE9D1F4ECEC3001388DB /* AnimalsViewController+handler.swift in Sources */,
+				99A9EEAB1F4FF12F001388DB /* LoginController.swift in Sources */,
+				99A9EEAE1F505063001388DB /* InformationViewController.swift in Sources */,
+				99A9EEB01F505130001388DB /* InformationCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,24 +420,31 @@
 		};
 		99A9EE741F4EA456001388DB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C1CC6A7C48F608F3D6B915EC /* Pods-TaipeiZooJSON.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = TaipeiZooJSON/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cliffc.TaipeiZooJSON;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TaipeiZooJSON/TaipeiZooJSON-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		99A9EE751F4EA456001388DB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6F74B31AF1AF0F6B5AB4FE4 /* Pods-TaipeiZooJSON.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = TaipeiZooJSON/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cliffc.TaipeiZooJSON;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TaipeiZooJSON/TaipeiZooJSON-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -305,6 +468,7 @@
 				99A9EE751F4EA456001388DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

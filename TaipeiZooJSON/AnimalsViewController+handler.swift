@@ -45,7 +45,7 @@ extension AnimalsViewController{
         if let dictionary = json as? [String: Dictionary<String, Any>]{
             if let result = dictionary["result"]{
                 if let dic = result["results"] as? [Dictionary<String, Any>]{
-                    let numbers = 1 //dic.count-1
+                    let numbers = dic.count-1
                     firebaseUploadWithImage(numbers: numbers, dictionary: dic)
                     uploadDataIntoDatabase(numbers: numbers, dictionary: dic)
                 }
@@ -127,7 +127,7 @@ func firebaseUploadWithImage(numbers: Int,dictionary: [Dictionary<String, Any>])
             perform(#selector(handleLogout), with: nil, afterDelay: 0)
         }else{
             //fetchUserAndSetupNavBarTitle()
-            print("login successful")
+//            print("login successful")
         }
     }
     

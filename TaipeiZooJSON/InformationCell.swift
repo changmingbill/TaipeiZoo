@@ -126,13 +126,13 @@ class InformationCell: UICollectionViewCell {
         //x,y,w,h
         leftTextView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
         leftTextView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        leftTextViewWidthAnchor = leftTextView.widthAnchor.constraint(equalToConstant: screenWidth/3)
+        leftTextViewWidthAnchor = leftTextView.widthAnchor.constraint(equalToConstant: 120)
         leftTextViewWidthAnchor?.isActive = true
         leftTextView.heightAnchor.constraint(equalToConstant: 26).isActive = true
         //x,y,w,h
         rightTextView.leftAnchor.constraint(equalTo: leftTextView.rightAnchor, constant: 0).isActive = true
         rightTextView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        rightTextView.widthAnchor.constraint(equalToConstant: screenWidth/3*2).isActive = true
+        rightTextView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         rightTextView.heightAnchor.constraint(equalToConstant: 26).isActive = true
         //x,y,w,h
         //        textView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
@@ -140,8 +140,8 @@ class InformationCell: UICollectionViewCell {
         textView.topAnchor.constraint(equalTo: leftTextView.bottomAnchor).isActive = true
         //        textView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         textView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
-        textView.heightAnchor.constraint(equalToConstant: self.frame.height-32).isActive = true
-//        textView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+//        textView.heightAnchor.constraint(equalToConstant: self.frame.height-26).isActive = true
+        textView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
         
     }

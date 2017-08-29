@@ -64,7 +64,7 @@ class AnimalsViewController: UITableViewController {
         
         //this will crash because of background thread, so lets call this on dispatch_async main thread
         DispatchQueue.main.async {
-            print("we reloaded the table")
+//            print("we reloaded the table")
             self.tableView.reloadData()
         }
         

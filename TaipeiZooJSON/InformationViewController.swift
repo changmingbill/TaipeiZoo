@@ -18,20 +18,31 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         super.viewDidLoad()
         collectionView?.alwaysBounceVertical = true //可以維持collectionView顯示保持回彈狀態
         collectionView?.backgroundColor = UIColor.white // view.backgroundColor = UIColor.white這個沒效果
-        
-        self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+//        collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0) //設定collectionView與view間的邊界條件
 
+
+        self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
        
     }
 
-    
-    func fetchAnimal(animal: Animal){
-        
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return 0
+//    }
+    
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return UIEdgeInsetsMake(0, 0, 0, 0)
+//    }
+   
     /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    // In a storyboard-based application, you will often want to do a little prepvartion before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
@@ -42,48 +53,174 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
 
 //    override func numberOfSections(in collectionView: UICollectionView) -> Int {
 //        // #warning Incomplete implementation, return the number of sections
-//        return 0
+//        return 1
 //    }
 
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 8
+        return 10
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InformationCell
-        switch indexPath.row {
+        let cellHeightAnchor = cell.heightAnchor.constraint(equalToConstant: 0)
+        switch indexPath.item {
             
         case 0:
-            if let urlString = animal?.pic01Url{
-                cell.messgeImageView.loadImageUsingCacheWithUrlString(urlString: urlString)
+            if let urlString = animal?.pic0{
+                cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: urlString)
             }
         case 1:
-            cell.textView.text = animal?.name
+            cell.leftTextView.text = "Name: "
+            cell.rightTextView.text = animal?.name
+            if let leftWidth = cell.leftTextViewWidthAnchor?.constant{
+                leftWidth-60
+            }
         case 2:
-            cell.textView.text = animal?.enName
+            cell.leftTextView.text = "English Name: "
+            cell.rightTextView.text = animal?.enName
+            if let leftWidth = cell.leftTextViewWidthAnchor?.constant{
+                leftWidth-20
+            }
+
         case 3:
+            cell.leftTextView.text = "Location: "
             cell.textView.text = animal?.location
         case 4:
+            cell.leftTextView.text = "Distribution: "
             cell.textView.text = animal?.distribution
         case 5:
-            cell.textView.text = animal?.behavior
+            cell.leftTextView.text = "Habitat: "
+            cell.textView.text = animal?.habitat
+            if animal?.habitat == ""{
+                cell.isHidden = true
+            }
         case 6:
-            cell.textView.text = animal?.diet
-        case 7:
-            cell.textView.text = animal?.interpretation
+            cell.leftTextView.text = "Feature: "
+            cell.textView.text = animal?.feature
+            if animal?.feature == ""{
+                cell.isHidden = true
+            }
 
+        case 7:
+            cell.leftTextView.text = "Behavior: "
+            cell.textView.text = animal?.behavior
+            if animal?.behavior == ""{
+                cell.isHidden = true
+            }
+
+        case 8:
+            cell.leftTextView.text = "Diet: "
+           cell.textView.text = animal?.diet
+           if animal?.diet == ""{
+            cell.isHidden = true
+            }
+
+           
+        case 9:
+            cell.leftTextView.text = "Interpretation: "
+            cell.textView.text = animal?.interpretation
+            if animal?.interpretation == ""{
+                cell.isHidden = true
+            }
+
+            
         default:
             break
         }
-        
+//    let values = ["name": name, "enName": enName, "location": location, "distribution": distribution, "behavior": behavior, "diet": diet, "interpretation": interpretation, "feature": feature]    
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        var height: CGFloat = 80
+        var height: CGFloat = 40
+        let width = UIScreen.main.bounds.width
+
+        switch indexPath.item {
+          
+        case 0:
+            if animal?.pic0 == ""{
+                height = 0
+            }else if let imageHeight = animal?.imageHeight0?.floatValue, let imageWidth = animal?.imageWidth0?.floatValue{
+                height = CGFloat(imageHeight / imageWidth * Float(width))
+            }
+//        case 1:
+//            if animal?.name == ""{
+//                height = 0
+//            }else{
+//                if let text = animal?.name{
+//                    height = estimateFrameForText(text: text).height + 58
+//                }
+//            }
+
+        case 3:
+            if animal?.location == ""{
+                height = 0
+            }else{
+                if let text = animal?.location{
+                    height = estimateFrameForText(text: text).height + 58
+                }
+            }
+
+        case 4:
+            if animal?.distribution == ""{
+                height = 0
+            }else{
+                if let text = animal?.distribution{
+                    height = estimateFrameForText(text: text).height + 58
+                }
+            }
+
+        case 5:
+            if animal?.habitat == ""{
+                height = 0
+            }else{
+                if let text = animal?.habitat{
+                    height = estimateFrameForText(text: text).height + 58
+                }
+            }
+  
+        case 6:
+            if animal?.feature == ""{
+                height = 0
+            }else{
+                if let text = animal?.feature{
+                    height = estimateFrameForText(text: text).height + 58
+                }
+            }
+       
+        case 7:
+            if animal?.behavior == ""{
+                height = 0
+           
+            }else{
+                if let text = animal?.behavior{
+                    height = estimateFrameForText(text: text).height + 58
+                }
+            }
+
+        case 8:
+            if animal?.diet == ""{
+                height = 0
+            }else{
+                if let text = animal?.diet{
+                    height = estimateFrameForText(text: text).height + 60
+                }
+            }
+        case 9:
+            if animal?.interpretation == ""{
+                 height = 0
+            }else{
+                if let text = animal?.interpretation{
+                    height = estimateFrameForText(text: text).height + 60
+                }
+            }
+        default:
+            break
+        }
+        
         
         // get estimated height somehow???
 //        let message = messages[indexPath.item]
@@ -97,9 +234,15 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
 //        }
         
         
-        let width = UIScreen.main.bounds.width
         return CGSize(width: width, height: height)
     }
+    
+    private func estimateFrameForText(text: String) -> CGRect{
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin) //使用union可以同時包含兩個屬性:usesFontLeading,usesLineFragmentOrigin
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
+    }
+
 
     // MARK: UICollectionViewDelegate
 

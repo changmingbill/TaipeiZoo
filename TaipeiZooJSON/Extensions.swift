@@ -22,8 +22,10 @@ extension UIImageView{
         }
         
         //otherwise fire off a new download
-        let url = URL(string: urlString)
-        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
             //download hit an error so lets return out
             if error != nil{
                 print(error)
@@ -41,6 +43,7 @@ extension UIImageView{
             }
             
         }).resume()
+    
 
     }
 }

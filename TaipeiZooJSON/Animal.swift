@@ -14,13 +14,23 @@ class Animal: NSObject{
     var keywords: String?
     var location: String?
     var distribution: String?
+    var habitat: String?
     var behavior: String?
     var diet: String?
     var interpretation: String?
-    var pic01Url: String?
+    var pic0: String?
+    var pic1: String?
+    var pic2: String?
+    var pic3: String?
     var feature: String?
-    var imageHeight: NSNumber?
-    var imageWidth: NSNumber?
+    var imageHeight0: NSNumber?
+    var imageHeight1: NSNumber?
+    var imageHeight2: NSNumber?
+    var imageHeight3: NSNumber?
+    var imageWidth0: NSNumber?
+    var imageWidth1: NSNumber?
+    var imageWidth2: NSNumber?
+    var imageWidth3: NSNumber?
     
 //    init(dictionary: [String: Any]) {
 //        super.init()

@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 class AnimalsViewController: UITableViewController {
-    
+   
     let reachability = Reachability(hostName: "www.apple.com")
     let zooAPISite = "http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=a3e2b221-75e0-45c1-8f97-75acbd43d613"
     lazy var session: URLSession = {//宣告一個urlsession
@@ -17,23 +17,19 @@ class AnimalsViewController: UITableViewController {
     }()
     
     let cellId = "cellId"
-    
     var animals = [Animal]()
-    var animalDictionary = [String: Animal]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
-        checkIfUserIsLoggedIn()
-//        downloadWithSession(WebSite: zooAPISite)
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+        
         fetchAnimal()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
+        checkIfUserIsLoggedIn()
+//        downloadWithSession(WebSite: zooAPISite)
     }
     
     func fetchAnimal(){
@@ -47,8 +43,10 @@ class AnimalsViewController: UITableViewController {
                     animal.setValuesForKeys(dictionary)
                     self.animals.append(animal)
                 }
-            })
-            self.attemptReloadOfTable()
+              })
+                self.attemptReloadOfTable()
+            
+            
         }, withCancel: nil)
     }
     
@@ -102,8 +100,10 @@ class AnimalsViewController: UITableViewController {
         let animal = animals[indexPath.row]
         cell.textLabel?.text = animal.name
         cell.detailTextLabel?.text = animal.enName
-        if let urlString = animal.pic01Url{
+        if let urlString = animal.pic0, animal.pic0 != ""{
             cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: urlString)
+        }else{
+            cell.animalImageView.image = UIImage(named: "Panda")
         }
 //         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
 

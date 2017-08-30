@@ -19,11 +19,14 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         collectionView?.alwaysBounceVertical = true //可以維持collectionView顯示保持回彈狀態
         collectionView?.backgroundColor = UIColor.white // view.backgroundColor = UIColor.white這個沒效果
         collectionView?.contentInset = UIEdgeInsets(top: 1, left: 0, bottom: 8, right: 0) //設定collectionView與view間的邊界條件
-
-
+        if let titleName = animal?.name{
+            navigationItem.title = titleName
+        }
         self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-       
+//        navigationItem.leftBarButtonItem? = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
+//        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
+        navigationController?.navigationBar.topItem?.title = "Back"
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -69,17 +72,21 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         return 10
     }
     
-    func changeImage(i: Int, imageUrls: [String], cell: InformationCell){
+    func changeImage(indexPath: IndexPath, i: Int, imageUrls: [String], cell: InformationCell){
         
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            cell.animalImageView.image = nil //將animalImageView清空
             cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: imageUrls[i])
-        }, completion: { (completed) in
-//            print(i)
+//            self.collectionView?.reloadItems(at: [indexPath])
+         }, completion: { (completed) in
+
         })
         
 
     }
     
+    var i = 0
+
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InformationCell
 
@@ -110,25 +117,19 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
                 
                 if imageUrls.count > 1 {
-                    var i = 0
-                    Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { (timer) in
+                    Timer.scheduledTimer(withTimeInterval: 8, repeats: true, block: { (timer) in
                         
-                        self.changeImage(i: i,imageUrls: imageUrls, cell: cell)
-                        i += 1
-                        if i == imageUrls.count{
-                            i = 0
+                        self.changeImage(indexPath: indexPath, i: self.i, imageUrls: imageUrls, cell: cell)
+                        self.i += 1
+                        if self.i == imageUrls.count{
+                            self.i = 0
                         }
                         
                     })
-
                 }
                 
             }
-            
-            
-            
-        
-            
+  
         case 1:
             cell.leftTextView.text = "Name : "
             cell.rightTextView.text = animal?.name
@@ -202,7 +203,13 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         case 0:
             if animal?.pic0 == "" || animal?.pic1 == "" || animal?.pic2 == "" || animal?.pic3 == "" || animal?.pic0 == nil {
                 height = 0
-            }else if let imageHeight = animal?.imageHeight0?.floatValue, let imageWidth = animal?.imageWidth0?.floatValue{
+            }else if self.i == 0, let imageHeight = animal?.imageHeight0?.floatValue, let imageWidth = animal?.imageWidth0?.floatValue{
+                height = CGFloat(imageHeight / imageWidth * Float(width))
+            }else if self.i == 1, let imageHeight = animal?.imageHeight1?.floatValue, let imageWidth = animal?.imageWidth1?.floatValue{
+                height = CGFloat(imageHeight / imageWidth * Float(width))
+            }else if self.i == 2, let imageHeight = animal?.imageHeight2?.floatValue, let imageWidth = animal?.imageWidth2?.floatValue{
+                height = CGFloat(imageHeight / imageWidth * Float(width))
+            }else if self.i == 3, let imageHeight = animal?.imageHeight3?.floatValue, let imageWidth = animal?.imageWidth3?.floatValue{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
             }
         case 1:
@@ -236,7 +243,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = 0
             }else{
                 if let text = animal?.distribution{
-                    height = estimateFrameForText(text: text).height + 58
+                    height = estimateFrameForText(text: text).height + 50
                 }
             }
 
@@ -254,7 +261,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = 0
             }else{
                 if let text = animal?.feature{
-                    height = estimateFrameForText(text: text).height + 58
+                    height = estimateFrameForText(text: text).height + 53
                 }
             }
        
@@ -264,7 +271,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
            
             }else{
                 if let text = animal?.behavior{
-                    height = estimateFrameForText(text: text).height + 58
+                    height = estimateFrameForText(text: text).height + 60
                 }
             }
 
@@ -273,7 +280,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = 0
             }else{
                 if let text = animal?.diet{
-                    height = estimateFrameForText(text: text).height + 60
+                    height = estimateFrameForText(text: text).height + 50
                 }
             }
         case 9:
@@ -281,7 +288,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                  height = 0
             }else{
                 if let text = animal?.interpretation{
-                    height = estimateFrameForText(text: text).height + 60
+                    height = estimateFrameForText(text: text).height + 58
                 }
             }
         default:

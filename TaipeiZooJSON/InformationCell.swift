@@ -29,6 +29,7 @@ class InformationCell: UICollectionViewCell {
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.backgroundColor = UIColor.clear
         tv.textColor = UIColor.white
+        tv.isScrollEnabled = false
         tv.isEditable = false
         return tv
     }()
@@ -39,6 +40,7 @@ class InformationCell: UICollectionViewCell {
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.backgroundColor = UIColor.clear
         tv.textColor = UIColor.white
+        tv.isScrollEnabled = false
         tv.isEditable = false
         return tv
     }()

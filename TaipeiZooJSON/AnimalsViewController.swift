@@ -21,6 +21,8 @@ class AnimalsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        navigationItem.title = "TAIPEI ZOO"
+//        navigationController?.navigationBar.topItem?.title = "TAIPEI ZOO"
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
         fetchAnimal()
@@ -75,6 +77,34 @@ class AnimalsViewController: UITableViewController {
 //        // #warning Incomplete implementation, return the number of sections
 //        return 0
 //    }
+    
+    
+
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let shareAction = UITableViewRowAction(style: .default, title: "Share") { (action, indexPath) in
+            let animal = self.animals[indexPath.row]
+            if let name = animal.name, let ename = animal.enName{
+            let defaultText = "My favorite animal is " + name + "(" + ename + ")"
+            if let urlString = animal.pic0, animal.pic0 != ""{
+                if let Url = URL(string: urlString){
+                if let imageToShare = NSData(contentsOf: Url)
+                {
+                    let activityController = UIActivityViewController(activityItems: [defaultText, imageToShare], applicationActivities: nil)
+                    self.present(activityController, animated: true, completion: nil)
+                }
+            }
+
+            }else{
+                    let activityController = UIActivityViewController(activityItems: [defaultText], applicationActivities: nil)
+                    self.present(activityController, animated: true, completion: nil)
+                 }
+                
+            }
+        }
+        shareAction.backgroundColor = UIColor(r: 48, g: 173, b: 99)
+             return [shareAction]
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
        return 72
     }

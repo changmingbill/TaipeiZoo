@@ -84,7 +84,6 @@ class InformationCell: UICollectionViewCell {
         if let imageView = tapGesture.view as? UIImageView{
             self.informationViewController?.performZoomInForStaringImageView(startingImageView: imageView)
         }
-        print("get the image")
         
     }
     

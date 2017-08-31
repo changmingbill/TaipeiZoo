@@ -26,7 +26,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         
 //        navigationItem.leftBarButtonItem? = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
 //        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
-        navigationController?.navigationBar.topItem?.title = "Back"
+//        navigationController?.navigationBar.topItem?.title = "Back"
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -34,10 +34,10 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     }
     
     //修正旋轉視角bubbleView會置中的問題
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        collectionView?.collectionViewLayout.invalidateLayout()
-    }
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        collectionView?.collectionViewLayout.invalidateLayout()
+//    }
 
     
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -76,7 +76,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             cell.animalImageView.image = nil //將animalImageView清空
-            cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: imageUrls[i])
+            cell.animalImageView.loadImageWithoutCacheWithUrlString(urlString: imageUrls[i])
 //            self.collectionView?.reloadItems(at: [indexPath])
          }, completion: { (completed) in
 
@@ -89,13 +89,15 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InformationCell
-
+        
+        cell.informationViewController = self //這行不打無法從其他class控制本地端class的函式
+        
         switch indexPath.item {
             
         case 0:
-//            if let urlString = animal?.pic0{
-//                cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: urlString)
-//            }
+            cell.leftTextView.isHidden = true
+            cell.rightTextView.isHidden = true
+            cell.textView.isHidden = true
             var imageUrls = [String]()
             cell.bubbleView.backgroundColor = UIColor.clear
             
@@ -114,14 +116,14 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             
             if let imageUrl = animal?.pic0{
                 
-                cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: imageUrl)
+                cell.animalImageView.loadImageWithoutCacheWithUrlString(urlString: imageUrl)
                 
                 if imageUrls.count > 1 {
                     Timer.scheduledTimer(withTimeInterval: 8, repeats: true, block: { (timer) in
-                        
-                        self.changeImage(indexPath: indexPath, i: self.i, imageUrls: imageUrls, cell: cell)
                         self.i += 1
-                        if self.i == imageUrls.count{
+                        self.changeImage(indexPath: indexPath, i: self.i, imageUrls: imageUrls, cell: cell)
+                        
+                        if self.i == imageUrls.count-1{
                             self.i = 0
                         }
                         
@@ -197,7 +199,6 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         
         var height: CGFloat = 20
         let width = UIScreen.main.bounds.width
-
         switch indexPath.item {
           
         case 0:
@@ -207,6 +208,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = CGFloat(imageHeight / imageWidth * Float(width))
             }else if self.i == 1, let imageHeight = animal?.imageHeight1?.floatValue, let imageWidth = animal?.imageWidth1?.floatValue{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
+                print(height)
             }else if self.i == 2, let imageHeight = animal?.imageHeight2?.floatValue, let imageWidth = animal?.imageWidth2?.floatValue{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
             }else if self.i == 3, let imageHeight = animal?.imageHeight3?.floatValue, let imageWidth = animal?.imageWidth3?.floatValue{
@@ -304,6 +306,83 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin) //使用union可以同時包含兩個屬性:usesFontLeading,usesLineFragmentOrigin
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
     }
+    
+    var startingFrame: CGRect?
+    var blackBackgroundView: UIView?
+    var startingImageView: UIView?
+    //my custom zooming logic
+    func performZoomInForStaringImageView(startingImageView: UIImageView){
+        startingFrame = startingImageView.superview?.convert(startingImageView.frame, to: nil)//取startingImageView size
+        
+        self.startingImageView = startingImageView
+        self.startingImageView?.isHidden = true
+        
+        let zoomingImageView = UIImageView(frame: startingFrame!)
+        zoomingImageView.backgroundColor = UIColor.clear
+        zoomingImageView.layer.cornerRadius = 10
+        zoomingImageView.clipsToBounds = true
+        zoomingImageView.image = startingImageView.image
+        zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
+        zoomingImageView.isUserInteractionEnabled = true
+        if let keyWindow = UIApplication.shared.keyWindow{
+            keyWindow.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            blackBackgroundView = UIView(frame: keyWindow.frame)
+            blackBackgroundView?.backgroundColor = UIColor.black
+            blackBackgroundView?.alpha = 0 //開始時會看不見
+            keyWindow.addSubview(blackBackgroundView!) //這行程式碼在前，所以blackBackgroundView會在zoomingImageView之後呈現
+            keyWindow.addSubview(zoomingImageView)
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.blackBackgroundView?.alpha = 1 //從0->1，有動畫漸層效果
+                //math?
+                // h2/w2 = h1/w1
+                // h2 = h1 / w1 * w2
+                var height: CGFloat = 300
+                let width = keyWindow.frame.width
+                if self.animal?.pic0 == "" || self.animal?.pic1 == "" || self.animal?.pic2 == "" || self.animal?.pic3 == "" || self.animal?.pic0 == nil {
+                    height = 0
+                }else if self.i == 0, let imageHeight = self.animal?.imageHeight0?.floatValue, let imageWidth = self.animal?.imageWidth0?.floatValue{
+                    height = CGFloat(imageHeight / imageWidth * Float(width))
+                }else if self.i == 1, let imageHeight = self.animal?.imageHeight1?.floatValue, let imageWidth = self.animal?.imageWidth1?.floatValue{
+                    height = CGFloat(imageHeight / imageWidth * Float(width))
+                    print(height)
+                }else if self.i == 2, let imageHeight = self.animal?.imageHeight2?.floatValue, let imageWidth = self.animal?.imageWidth2?.floatValue{
+                    height = CGFloat(imageHeight / imageWidth * Float(width))
+                }else if self.i == 3, let imageHeight = self.animal?.imageHeight3?.floatValue, let imageWidth = self.animal?.imageWidth3?.floatValue{
+                    height = CGFloat(imageHeight / imageWidth * Float(width))
+                }
+                    
+                    //keyWindow是整個app的view
+                    zoomingImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+                
+                zoomingImageView.center = keyWindow.center
+                
+                
+            }, completion: { (completed) in
+                //                zoomOutImageView.removeFromSuperview()
+            })
+            
+            
+        }
+        
+    }
+    
+    func handleZoomOut(tapGesture: UITapGestureRecognizer){
+        if let zoomOutImageView = tapGesture.view{
+            //need to animate back out to controller
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                zoomOutImageView.layer.cornerRadius = 10
+                zoomOutImageView.clipsToBounds = true
+                zoomOutImageView.frame = self.startingFrame!
+                self.blackBackgroundView?.alpha = 0
+            }, completion: { (completed: Bool) in
+                zoomOutImageView.removeFromSuperview()
+                self.startingImageView?.isHidden = false
+            })
+            
+        }
+    }
+
 
 
     // MARK: UICollectionViewDelegate

@@ -118,8 +118,9 @@ class AnimalsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let informationController = InformationViewController(collectionViewLayout: UICollectionViewFlowLayout())
         
-            let animal = self.animals[indexPath.row]
+            let animal = self.animals[indexPath.item]
             informationController.animal = animal
+        print(indexPath.item)
         navigationController?.pushViewController(informationController, animated: true)
         
         
@@ -131,7 +132,7 @@ class AnimalsViewController: UITableViewController {
         cell.textLabel?.text = animal.name
         cell.detailTextLabel?.text = animal.enName
         if let urlString = animal.pic0, animal.pic0 != ""{
-            cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: urlString)
+            cell.animalImageView.loadImageWithoutCacheWithUrlString(urlString: urlString)
         }else{
             cell.animalImageView.image = UIImage(named: "Panda")
         }

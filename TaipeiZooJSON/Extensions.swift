@@ -39,13 +39,44 @@ extension UIImageView{
                     self.image = downloadedImage
                 }
                 
+            }
+            
+        }).resume()
+
+    }
+    
+    
+    
+    func loadImageWithoutCacheWithUrlString(urlString: String){
+        
+        self.image = nil //會先留白再顯示image
+        
+        //otherwise fire off a new download
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+            //download hit an error so lets return out
+            if error != nil{
+                print(error)
+                return
+            }
+            DispatchQueue.main.async {
+                if let downloadedImage = UIImage(data: data!){
+                    //將image裝進cache，可不用重複下載
+                    imageCache.setObject(downloadedImage, forKey: urlString as AnyObject)
+                    
+                    self.image = downloadedImage
+                }
+                
                 
             }
             
         }).resume()
-    
-
+        
+        
     }
+
 }
 
 extension UIColor{

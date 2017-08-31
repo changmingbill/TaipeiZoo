@@ -77,12 +77,15 @@ class InformationCell: UICollectionViewCell {
         
         return imageView
     }()
+    
+    var informationViewController: InformationViewController?
     //這個方法主要的目的是要得到messgeImageView，轉換給chatLogController
     func handleZoomTap(tapGesture: UITapGestureRecognizer){
-        if (tapGesture.view as? UIImageView) != nil{//imageView表被觸到的imageView
-            //PRO Tip: don't perform a lot of custom logic inside of a view class
-//            self.chatLogController?.performZoomInForStaringImageView(startingImageView: imageView)
+        if let imageView = tapGesture.view as? UIImageView{
+            self.informationViewController?.performZoomInForStaringImageView(startingImageView: imageView)
         }
+        print("get the image")
+        
     }
     
     var bubbleWidthAnchor: NSLayoutConstraint?
@@ -103,7 +106,7 @@ class InformationCell: UICollectionViewCell {
         //x,y,w,h
         animalImageView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
         animalImageView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
-        animalImageView.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
+        animalImageView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
         animalImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
         
         //x,y,w,h
@@ -117,7 +120,7 @@ class InformationCell: UICollectionViewCell {
         bubbleViewRightAnchor?.isActive = true
         
         bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: -8)
-        //        bubbleViewLeftAnchor?.isActive = false
+//        bubbleViewLeftAnchor?.isActive = false
         
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         

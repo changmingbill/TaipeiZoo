@@ -47,7 +47,7 @@ extension AnimalsViewController{
                 if let dic = result["results"] as? [Dictionary<String, Any>]{
                     let numbers = dic.count-1
                     firebaseUploadWithImage(numbers: numbers, dictionary: dic)
-                    uploadDataIntoDatabase(numbers: numbers, dictionary: dic)
+//                    uploadDataIntoDatabase(numbers: numbers, dictionary: dic)
                 }
             }
         }
@@ -68,9 +68,9 @@ func firebaseUploadWithImage(numbers: Int,dictionary: [Dictionary<String, Any>])
                     }
             DispatchQueue.main.async {
                 if let downloadedImage = UIImage(data: data!){
-                    if let uploadData = UIImageJPEGRepresentation(downloadedImage, 0.1){
-                        let imageName = NSUUID().uuidString
-//                        let imageName = i
+                    if let uploadData = UIImageJPEGRepresentation(downloadedImage, 0.05){
+//                        let imageName = NSUUID().uuidString
+                        let imageName = i
                         let storageRef = FIRStorage.storage().reference().child("animal_images").child("\(index)").child("\(imageName).jpg")
                         storageRef.put(uploadData, metadata: nil, completion: { (metadata, error) in
                             if error != nil{

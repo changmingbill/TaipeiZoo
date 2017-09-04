@@ -11,7 +11,6 @@ import UIKit
 class Animal: NSObject{
     var name: String?
     var enName: String?
-    var keywords: String?
     var location: String?
     var distribution: String?
     var habitat: String?

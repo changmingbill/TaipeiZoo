@@ -25,6 +25,7 @@
 		99A9EEAC1F4FF12F001388DB /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEAA1F4FF12F001388DB /* LoginController+handlers.swift */; };
 		99A9EEAE1F505063001388DB /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEAD1F505062001388DB /* InformationViewController.swift */; };
 		99A9EEB01F505130001388DB /* InformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A9EEAF1F505130001388DB /* InformationCell.swift */; };
+		99F2564E1F5C0D9100C8B7FB /* SavingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F2564D1F5C0D9100C8B7FB /* SavingController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		99A9EEAA1F4FF12F001388DB /* LoginController+handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		99A9EEAD1F505062001388DB /* InformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		99A9EEAF1F505130001388DB /* InformationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationCell.swift; sourceTree = "<group>"; };
+		99F2564D1F5C0D9100C8B7FB /* SavingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavingController.swift; sourceTree = "<group>"; };
 		B6F74B31AF1AF0F6B5AB4FE4 /* Pods-TaipeiZooJSON.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaipeiZooJSON.release.xcconfig"; path = "Pods/Target Support Files/Pods-TaipeiZooJSON/Pods-TaipeiZooJSON.release.xcconfig"; sourceTree = "<group>"; };
 		C1CC6A7C48F608F3D6B915EC /* Pods-TaipeiZooJSON.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaipeiZooJSON.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TaipeiZooJSON/Pods-TaipeiZooJSON.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -138,6 +140,7 @@
 				99A9EE971F4EC16B001388DB /* AnimalsViewController.swift */,
 				99A9EE9C1F4ECEC3001388DB /* AnimalsViewController+handler.swift */,
 				99A9EEAD1F505062001388DB /* InformationViewController.swift */,
+				99F2564D1F5C0D9100C8B7FB /* SavingController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				99A9EEA61F4F02D9001388DB /* UserCell.swift in Sources */,
 				99A9EE981F4EC16B001388DB /* AnimalsViewController.swift in Sources */,
 				99A9EE9B1F4EC4BC001388DB /* Animal.swift in Sources */,
+				99F2564E1F5C0D9100C8B7FB /* SavingController.swift in Sources */,
 				99A9EE621F4EA456001388DB /* AppDelegate.swift in Sources */,
 				99A9EE6A1F4EA456001388DB /* TaipeiZooJSON.xcdatamodeld in Sources */,
 				99A9EEA81F4FEEAA001388DB /* User.swift in Sources */,

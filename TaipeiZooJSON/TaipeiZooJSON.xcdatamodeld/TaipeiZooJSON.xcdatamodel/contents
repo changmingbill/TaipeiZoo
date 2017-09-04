@@ -1,4 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Animal" representedClassName="AnimalM" syncable="YES" codeGenerationType="class">
+        <attribute name="behavior" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="diet" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="distribution" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="enName" attributeType="String" syncable="YES"/>
+        <attribute name="feature" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="habitat" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageHeight0" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageHeight1" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageHeight2" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageHeight3" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageWidth0" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageWidth1" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageWidth2" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="imageWidth3" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="interpretation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="pic0" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="pic1" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="pic2" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="pic3" optional="YES" attributeType="Binary" syncable="YES"/>
+    </entity>
+    <entity name="Car" representedClassName="Car" syncable="YES" codeGenerationType="class">
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <fetchedProperty name="fetchedProperty" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="Car"/>
+        </fetchedProperty>
+    </entity>
+    <elements>
+        <element name="Animal" positionX="-63" positionY="-18" width="128" height="358"/>
+        <element name="Car" positionX="-54" positionY="144" width="128" height="89"/>
+    </elements>
 </model>

@@ -7,13 +7,15 @@
 //
 
 import UIKit
-
+import CoreData
 private let reuseIdentifier = "Cell"
 
 class InformationViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var animal: Animal?
     var timer: Timer?
+    var animalM: AnimalM!
+    var imageUrls = [String]()
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.alwaysBounceVertical = true //可以維持collectionView顯示保持回彈狀態
@@ -24,14 +26,105 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         }
         self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-//        navigationItem.leftBarButtonItem? = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveToSavingController))
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "＜ Back", style: .plain, target: self, action: #selector(Dismiss))
 //        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
 //        navigationController?.navigationBar.topItem?.title = "Back"
+//        clearCoreDataStore()
     }
+    
+    func Dismiss(){
+        dismiss(animated: true) {
+
+        }
+    }
+
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
+    
+    var animalsViewController: AnimalsViewController? //原本已存在設定AnimalsViewController?，不用實體化
+    
+    func saveToSavingController(){
+            dismiss(animated: true) {
+                if let animal = self.animal{
+                    self.saveToCoredata(animal: animal)
+                }
+        
+                
+        self.animalsViewController?.showSavingControllerForAnimal()
+                
+        }
+    }
+    
+    func saveToCoredata(animal: Animal){
+        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate){
+            self.animalM = AnimalM(context: appDelegate.persistentContainer.viewContext)
+            if let name = animal.name{
+                self.animalM.name = name
+            }
+            if let enName = animal.enName{
+                self.animalM.enName = enName
+            }
+            if let location = animal.location{
+                self.animalM.location = location
+            }
+            if let distribution = animal.distribution{
+                self.animalM.distribution = distribution
+            }
+            if let habitat = animal.habitat{
+               self.animalM.habitat = habitat
+            }
+            if let behavior = animal.behavior{
+                self.animalM.behavior = behavior
+            }
+            if let diet = animal.diet{
+                 self.animalM.diet = diet
+            }
+            if let feature = animal.feature{
+                self.animalM.feature = feature
+            }
+            if let interpretation = animal.interpretation{
+                self.animalM.interpretation = interpretation
+            }
+            
+            if let urlString = animal.pic0, animal.pic0 != "",animal.pic0 != nil{
+                self.animalM.imageHeight0 = animal.imageHeight0 as! Float
+                self.animalM.imageWidth0 = animal.imageWidth0 as! Float
+                if let Url = URL(string: urlString)  {
+                    self.animalM.pic0 = NSData(contentsOf: Url)
+                }
+            }
+            
+            if let urlString = animal.pic1, animal.pic1 != "",animal.pic1 != nil{
+                self.animalM.imageHeight1 = animal.imageHeight1 as! Float
+                self.animalM.imageWidth1 = animal.imageWidth1 as! Float
+                if let Url = URL(string: urlString)  {
+                    self.animalM.pic1 = NSData(contentsOf: Url)
+                }
+            }
+            
+            if let urlString = animal.pic2, animal.pic2 != "",animal.pic2 != nil{
+                self.animalM.imageHeight2 = animal.imageHeight2 as! Float
+                self.animalM.imageWidth2 = animal.imageWidth2 as! Float
+                if let Url = URL(string: urlString)  {
+                    self.animalM.pic2 = NSData(contentsOf: Url)
+                }
+            }
+            
+            if let urlString = animal.pic3, animal.pic3 != "",animal.pic3 != nil{
+                self.animalM.imageHeight3 = animal.imageHeight3 as! Float
+                self.animalM.imageWidth3 = animal.imageWidth3 as! Float
+                if let Url = URL(string: urlString)  {
+                    self.animalM.pic2 = NSData(contentsOf: Url)
+                }
+            }
+            appDelegate.saveContext()
+        }
+    }
+    
     
     //修正旋轉視角bubbleView會置中的問題
 //    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -98,7 +191,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             cell.leftTextView.isHidden = true
             cell.rightTextView.isHidden = true
             cell.textView.isHidden = true
-            var imageUrls = [String]()
+            
             cell.bubbleView.backgroundColor = UIColor.clear
             
             if let url0 = animal?.pic0, animal?.pic0 != "",animal?.pic0 != nil{
@@ -121,9 +214,9 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 if imageUrls.count > 1 {
                     Timer.scheduledTimer(withTimeInterval: 8, repeats: true, block: { (timer) in
                         self.i += 1
-                        self.changeImage(indexPath: indexPath, i: self.i, imageUrls: imageUrls, cell: cell)
+                        self.changeImage(indexPath: indexPath, i: self.i, imageUrls: self.imageUrls, cell: cell)
                         
-                        if self.i == imageUrls.count-1{
+                        if self.i == self.imageUrls.count-1{
                             self.i = 0
                         }
                         
@@ -415,5 +508,25 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     
     }
     */
+    func clearCoreDataStore() {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+        
+        for i in 0...delegate.persistentContainer.managedObjectModel.entities.count-1 {
+            let entity = delegate.persistentContainer.managedObjectModel.entities[i]
+            
+            do {
+                let query = NSFetchRequest<NSFetchRequestResult>(entityName: entity.name!)
+                let deleterequest = NSBatchDeleteRequest(fetchRequest: query)
+                try context.execute(deleterequest)
+                try context.save()
+                
+            } catch let error as NSError {
+                print("Error: \(error.localizedDescription)")
+                abort()
+            }
+        }
+    }
+
 
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import CoreData
 class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
    
     let reachability = Reachability(hostName: "www.apple.com")
@@ -23,7 +24,9 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
     var searchController = UISearchController()
     override func viewDidLoad() {
         super.viewDidLoad()
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
+        let image = UIImage(named: "addFile")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showSavingControllerForAnimal))
+        
         navigationItem.title = "TAIPEI ZOO"
 //        navigationController?.navigationBar.topItem?.title = "TAIPEI ZOO"
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
@@ -31,14 +34,33 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
         fetchAnimal()
         setupSearchController()
         
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         checkIfUserIsLoggedIn()
 //        downloadWithSession(WebSite: zooAPISite)
+    }
+    
+    func Dismiss(){
+        dismiss(animated: true) {
+            print("Dismiss Complete")
+        }
+    }
+
+    
+    func handleSavingController(){
+       let savingController = SavingController()
+        navigationController?.pushViewController(savingController, animated: true)
+//        let navController = UINavigationController(rootViewController: savingController)
+//        present(navController, animated: true, completion: nil)
+    }
+    
+    func showSavingControllerForAnimal(){
+        let savingController = SavingController() //原本不存在，就要實體化SavingController()
+        navigationController?.pushViewController(savingController, animated: true)
+//        let navController = UINavigationController(rootViewController: savingController)
+//        present(navController, animated: true, completion: nil)
     }
     
      // MARK: - searchController
@@ -190,11 +212,13 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let informationController = InformationViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        
+            informationController.animalsViewController = self  //推過去時就要先告知
              let animal = (searchController.isActive) ? searchResults[indexPath.row] : animals[indexPath.row]
             informationController.animal = animal
 //        tableView.tableHeaderView = nil
-        navigationController?.pushViewController(informationController, animated: true)
+        let navController = UINavigationController(rootViewController: informationController)
+        present(navController, animated: true, completion: nil)
+//        navigationController?.pushViewController(informationController, animated: true)
         
         
     }
@@ -263,5 +287,7 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
 
 }

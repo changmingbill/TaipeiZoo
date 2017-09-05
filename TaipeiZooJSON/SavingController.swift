@@ -8,10 +8,11 @@
 
 import UIKit
 import CoreData
-class SavingController: UITableViewController, NSFetchedResultsControllerDelegate {
+class SavingController: UITableViewController, NSFetchedResultsControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate {
     let cellId = "cell"
     var animalMs:[AnimalM] = []
-//    var cars:[Car] = []
+    var searchResults = [AnimalM]()
+    var searchController = UISearchController()
     var fetchResultController: NSFetchedResultsController<AnimalM>!
     
     override func viewDidLoad() {
@@ -24,7 +25,58 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
 
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)], for: .normal)
         setupFetchRequest()
+        setupSearchController()
         }
+    
+    // MARK: - searchController
+    func setupSearchController(){
+        
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Search Animals..."
+        searchController.searchBar.tintColor = UIColor.white //Cancel字的顏色
+        searchController.searchBar.barTintColor = UIColor(r: 81, g: 126, b: 185)
+        searchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchResultsUpdater = self
+        definesPresentationContext = true //推到另一個controller，原本Controller的View會被覆蓋
+        
+    }
+    // MARK: - Search filter
+    func filterContent(for searchText: String){
+        searchResults = animalMs.filter({ (animal) -> Bool in
+            
+            if let name = animal.name, let enName = animal.enName{
+                //                if let name = restaurant.name, let location = restaurant.location {
+                //                    let isMatch = name.localizedCaseInsensitiveContains(searchText) || location.localizedCaseInsensitiveContains(searchText)
+                //                    return isMatch
+                //                }
+                
+                let isMatchName = name.localizedCaseInsensitiveContains(searchText)
+                let isMatchEnName = enName.localizedCaseInsensitiveContains(searchText)
+                
+                if isMatchName{
+                    return isMatchName
+                }else if isMatchEnName{
+                    return isMatchEnName
+                }
+                
+            }
+            return false
+        })
+    }
+    
+    // MARK: - SearchResult
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text{
+            filterContent(for: searchText)
+            tableView.reloadData()
+        }
+    }
+    //在搜尋狀態列不能執行編輯動作(editActions)
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return searchController.isActive ? false :  true
+    }
+
     
     // MARK: - FetchRequest
     func setupFetchRequest(){
@@ -147,7 +199,7 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let savingInfoController = SavingInfoViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        let animal = animalMs[indexPath.row]
+        let animal = (searchController.isActive) ? searchResults[indexPath.row] : animalMs[indexPath.row]
         savingInfoController.animalM = animal
         //        tableView.tableHeaderView = nil
 //        let navController = UINavigationController(rootViewController: savingInfoController)
@@ -159,7 +211,11 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
 
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return animalMs.count
+        if searchController.isActive{
+            return searchResults.count
+        }else{
+            return animalMs.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -170,8 +226,7 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
-        let animal = animalMs[indexPath.row]
-
+        let animal = (searchController.isActive) ? searchResults[indexPath.row] : animalMs[indexPath.row]
         cell.textLabel?.text = animal.name
         cell.detailTextLabel?.text = animal.enName
         if let imageData = animal.pic0, animal.pic0 != nil{

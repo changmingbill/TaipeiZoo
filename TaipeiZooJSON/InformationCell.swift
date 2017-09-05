@@ -79,10 +79,12 @@ class InformationCell: UICollectionViewCell {
     }()
     
     var informationViewController: InformationViewController?
+    var savingInfoController: SavingInfoViewController?
     //這個方法主要的目的是要得到messgeImageView，轉換給chatLogController
     func handleZoomTap(tapGesture: UITapGestureRecognizer){
         if let imageView = tapGesture.view as? UIImageView{
             self.informationViewController?.performZoomInForStaringImageView(startingImageView: imageView)
+            self.savingInfoController?.performZoomInForStaringImageView(startingImageView: imageView)
         }
         
     }

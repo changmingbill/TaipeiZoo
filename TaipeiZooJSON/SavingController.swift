@@ -18,8 +18,11 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "＜ Back", style: .plain, target: self, action: #selector(PopBack))
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+        navigationItem.title = "My Favorites"
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)]
+        //(name: "mplus-1c-regular", ofSize: 21)!]
 
-
+        navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)], for: .normal)
         setupFetchRequest()
         }
     
@@ -48,37 +51,82 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
        
     }
     
-//    // MARK: - NSFetchedResultControllerDelegate
-//    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        tableView.beginUpdates()
-//    }
-//    
-//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-//        switch type{
-//        case .insert:
-//            if let newIndexPath = newIndexPath{
-//                tableView.insertRows(at: [newIndexPath], with: .fade)
-//            }
-//        case .delete:
-//            if let indexPath = indexPath{
-//                tableView.deleteRows(at: [indexPath], with: .fade)
-//            }
-//        case .update:
-//            if let indexPath = indexPath{
-//                tableView.reloadRows(at: [indexPath], with: .fade)
-//            }
-//        default:
-//            tableView.reloadData()
-//        }
-//        
-//        if let fetchObjects = controller.fetchedObjects{
-//            animalMs = fetchObjects as! [AnimalM]
-//        }
-//    }
-//    
-//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        tableView.endUpdates()
-//    }
+    // MARK: - NSFetchedResultControllerDelegate
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type{
+        case .insert:
+            if let newIndexPath = newIndexPath{
+                tableView.insertRows(at: [newIndexPath], with: .fade)
+            }
+        case .delete:
+            if let indexPath = indexPath{
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+        case .update:
+            if let indexPath = indexPath{
+                tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+        default:
+            tableView.reloadData()
+        }
+        
+        if let fetchObjects = controller.fetchedObjects{
+            animalMs = fetchObjects as! [AnimalM]
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
+    
+    // MARK: - share & delete actions
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        // Social Sharing Button
+        let shareAction = UITableViewRowAction(style: .default, title: "Share") { (action, indexPath) in
+            let animal = self.animalMs[indexPath.row]
+            if let name = animal.name, let ename = animal.enName{
+                let defaultText = "My favorite animal is " + name + "(" + ename + ")"
+                if let imageData = animal.pic0, animal.pic0 != nil{
+                        let imageToShare = NSData(data: imageData as Data)
+                            let activityController = UIActivityViewController(activityItems: [defaultText, imageToShare], applicationActivities: nil)
+                            self.present(activityController, animated: true, completion: nil)
+                    
+                }else{
+                    let activityController = UIActivityViewController(activityItems: [defaultText], applicationActivities: nil)
+                    self.present(activityController, animated: true, completion: nil)
+                }
+                
+            }
+        }
+        shareAction.backgroundColor = UIColor(r: 48, g: 173, b: 99)
+        
+        // Delete button
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.default, title: "Delete",handler: { (action, indexPath) -> Void in
+            
+            // Delete the row from the data source
+            //            self.restaurants.remove(at: indexPath.row)
+            //            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            //如果用optional binding的話，as後就一定要加?號
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate){
+                let context = appDelegate.persistentContainer.viewContext
+                let animalToDelete = self.fetchResultController.object(at: indexPath)
+                context.delete(animalToDelete)
+                
+                appDelegate.saveContext()
+            }
+            
+        })
+        
+        deleteAction.backgroundColor = UIColor(red: 202.0/255.0, green: 202.0/255.0, blue: 203.0/255.0, alpha: 1.0)
+        
+        return [deleteAction, shareAction]
+    }
+
 
     
     func Dismiss(){
@@ -96,6 +144,19 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
 //    override func numberOfSections(in tableView: UITableView) -> Int {
 //        return 1
 //    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let savingInfoController = SavingInfoViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        let animal = animalMs[indexPath.row]
+        savingInfoController.animalM = animal
+        //        tableView.tableHeaderView = nil
+//        let navController = UINavigationController(rootViewController: savingInfoController)
+//        present(navController, animated: true, completion: nil)
+        navigationController?.pushViewController(savingInfoController, animated: true)
+        
+        
+    }
+
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return animalMs.count

@@ -1,8 +1,8 @@
 //
-//  InformationViewController.swift
+//  SavingInfoViewController.swift
 //  TaipeiZooJSON
 //
-//  Created by 張健民 on 2017/8/25.
+//  Created by 張健民 on 2017/9/5.
 //  Copyright © 2017年 CliffC. All rights reserved.
 //
 
@@ -10,148 +10,53 @@ import UIKit
 import CoreData
 private let reuseIdentifier = "Cell"
 
-class InformationViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class SavingInfoViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    var animal: Animal?
     var timer: Timer?
-    var animalM: AnimalM!
-    var imageUrls = [String]()
+    var animalM: AnimalM?
+    var imageData = [Any]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.alwaysBounceVertical = true //可以維持collectionView顯示保持回彈狀態
         collectionView?.backgroundColor = UIColor.white // view.backgroundColor = UIColor.white這個沒效果
         collectionView?.contentInset = UIEdgeInsets(top: 1, left: 0, bottom: 8, right: 0) //設定collectionView與view間的邊界條件
-        if let titleName = animal?.name{
+        if let titleName = animalM?.name{
             navigationItem.title = titleName
         }
         self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveToSavingController))
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "＜ Back", style: .plain, target: self, action: #selector(Dismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "＜ Back", style: .plain, target: self, action: #selector(PopBack))
         
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)]
         
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)], for: .normal)
         
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)], for: .normal)
-//        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
-//        navigationController?.navigationBar.topItem?.title = "Back"
-//        clearCoreDataStore()
     }
     
     func Dismiss(){
         dismiss(animated: true) {
-
+            
         }
     }
+    
+    func PopBack(){
+        navigationController?.popViewController(animated: true)
+    }
 
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
-    
-    var animalsViewController: AnimalsViewController? //原本已存在設定AnimalsViewController?，不用實體化
-    
-    func saveToSavingController(){
-            dismiss(animated: true) {
-                if let animal = self.animal{
-                    self.saveToCoredata(animal: animal)
-                }
-        
-                
-        self.animalsViewController?.showSavingControllerForAnimal()
-                
-        }
-    }
-    
-    func saveToCoredata(animal: Animal){
-        if let appDelegate = (UIApplication.shared.delegate as? AppDelegate){
-            self.animalM = AnimalM(context: appDelegate.persistentContainer.viewContext)
-            if let name = animal.name{
-                self.animalM.name = name
-            }
-            if let enName = animal.enName{
-                self.animalM.enName = enName
-            }
-            if let location = animal.location{
-                self.animalM.location = location
-            }
-            if let distribution = animal.distribution{
-                self.animalM.distribution = distribution
-            }
-            if let habitat = animal.habitat{
-               self.animalM.habitat = habitat
-            }
-            if let behavior = animal.behavior{
-                self.animalM.behavior = behavior
-            }
-            if let diet = animal.diet{
-                 self.animalM.diet = diet
-            }
-            if let feature = animal.feature{
-                self.animalM.feature = feature
-            }
-            if let interpretation = animal.interpretation{
-                self.animalM.interpretation = interpretation
-            }
-            
-            if let urlString = animal.pic0, animal.pic0 != "",animal.pic0 != nil{
-                self.animalM.imageHeight0 = animal.imageHeight0 as! Float
-                self.animalM.imageWidth0 = animal.imageWidth0 as! Float
-                if let Url = URL(string: urlString)  {
-                    self.animalM.pic0 = NSData(contentsOf: Url)
-                }
-            }
-            
-            if let urlString = animal.pic1, animal.pic1 != "",animal.pic1 != nil{
-                self.animalM.imageHeight1 = animal.imageHeight1 as! Float
-                self.animalM.imageWidth1 = animal.imageWidth1 as! Float
-                if let Url = URL(string: urlString)  {
-                    self.animalM.pic1 = NSData(contentsOf: Url)
-                }
-            }
-            
-            if let urlString = animal.pic2, animal.pic2 != "",animal.pic2 != nil{
-                self.animalM.imageHeight2 = animal.imageHeight2 as! Float
-                self.animalM.imageWidth2 = animal.imageWidth2 as! Float
-                if let Url = URL(string: urlString)  {
-                    self.animalM.pic2 = NSData(contentsOf: Url)
-                }
-            }
-            
-            if let urlString = animal.pic3, animal.pic3 != "",animal.pic3 != nil{
-                self.animalM.imageHeight3 = animal.imageHeight3 as! Float
-                self.animalM.imageWidth3 = animal.imageWidth3 as! Float
-                if let Url = URL(string: urlString)  {
-                    self.animalM.pic2 = NSData(contentsOf: Url)
-                }
-            }
-            appDelegate.saveContext()
-        }
-    }
-    
-    
-    //修正旋轉視角bubbleView會置中的問題
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        super.viewWillTransition(to: size, with: coordinator)
-//        collectionView?.collectionViewLayout.invalidateLayout()
-//    }
 
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 0
-//    }
-    
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsetsMake(0, 0, 0, 0)
-//    }
+
    
     /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little prepvartion before navigation
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using [segue destinationViewController].
         // Pass the selected object to the new view controller.
@@ -160,36 +65,36 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
 
     // MARK: UICollectionViewDataSource
 
-//    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 1
-//    }
-
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return 10
     }
     
-    func changeImage(indexPath: IndexPath, i: Int, imageUrls: [String], cell: InformationCell){
+    func changeImage(indexPath: IndexPath, i: Int, imageData: [Any], cell: InformationCell){
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             cell.animalImageView.image = nil //將animalImageView清空
-            cell.animalImageView.loadImageWithoutCacheWithUrlString(urlString: imageUrls[i])
-//            self.collectionView?.reloadItems(at: [indexPath])
-         }, completion: { (completed) in
-
+            cell.animalImageView.image = UIImage(data: imageData[i] as! Data)
+            
+            //            self.collectionView?.reloadItems(at: [indexPath])
+        }, completion: { (completed) in
+            
         })
         
-
     }
-    
-    var i = 0
 
+
+    var i = 0
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InformationCell
         
-        cell.informationViewController = self //這行不打無法從其他class控制本地端class的函式
+        cell.savingInfoController = self //這行不打無法從其他class控制本地端class的函式
         
         switch indexPath.item {
             
@@ -200,29 +105,29 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             
             cell.bubbleView.backgroundColor = UIColor.clear
             
-            if let url0 = animal?.pic0, animal?.pic0 != "",animal?.pic0 != nil{
-                imageUrls.append(url0)
+            if let imageData0 = animalM?.pic0, animalM?.pic0 != nil{
+                imageData.append(imageData0)
             }
-            if let url1 = animal?.pic1, animal?.pic1 != "", animal?.pic1 != nil{
-                imageUrls.append(url1)
+            if let imageData1 = animalM?.pic1, animalM?.pic1 != nil{
+                imageData.append(imageData1)
             }
-            if let url2 = animal?.pic2, animal?.pic2 != "", animal?.pic2 != nil{
-                imageUrls.append(url2)
+            if let imageData2 = animalM?.pic2, animalM?.pic2 != nil{
+                imageData.append(imageData2)
             }
-            if let url3 = animal?.pic3, animal?.pic3 != "", animal?.pic3 != nil{
-                imageUrls.append(url3)
+            if let imageData3 = animalM?.pic3, animalM?.pic3 != nil{
+                imageData.append(imageData3)
             }
             
-            if let imageUrl = animal?.pic0{
+            if let imageDatum = animalM?.pic0{
                 
-                cell.animalImageView.loadImageWithoutCacheWithUrlString(urlString: imageUrl)
+                cell.animalImageView.image = UIImage(data: imageDatum as Data)
                 
-                if imageUrls.count > 1 {
+                if imageData.count > 1 {
                     Timer.scheduledTimer(withTimeInterval: 8, repeats: true, block: { (timer) in
                         self.i += 1
-                        self.changeImage(indexPath: indexPath, i: self.i, imageUrls: self.imageUrls, cell: cell)
+                        self.changeImage(indexPath: indexPath, i: self.i, imageData: self.imageData, cell: cell)
                         
-                        if self.i == self.imageUrls.count-1{
+                        if self.i == self.imageData.count-1{
                             self.i = 0
                         }
                         
@@ -230,66 +135,66 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 }
                 
             }
-  
+            
         case 1:
             cell.leftTextView.text = "Name : "
-            cell.rightTextView.text = animal?.name
+            cell.rightTextView.text = animalM?.name
             cell.leftTextViewWidthAnchor?.constant = 65
         case 2:
             cell.leftTextView.text = "English Name : "
-            cell.rightTextView.text = animal?.enName
+            cell.rightTextView.text = animalM?.enName
             
         case 3:
             cell.leftTextView.text = "Location : "
-            cell.rightTextView.text = animal?.location
+            cell.rightTextView.text = animalM?.location
             cell.leftTextViewWidthAnchor?.constant = 85
         case 4:
             cell.leftTextView.text = "Distribution : "
-            cell.textView.text = animal?.distribution
-            if animal?.distribution == ""{
+            cell.textView.text = animalM?.distribution
+            if animalM?.distribution == ""{
                 cell.isHidden = true
             }
-
+            
         case 5:
             cell.leftTextView.text = "Habitat : "
-            cell.textView.text = animal?.habitat
-            if animal?.habitat == ""{
+            cell.textView.text = animalM?.habitat
+            if animalM?.habitat == ""{
                 cell.isHidden = true
             }
         case 6:
             cell.leftTextView.text = "Feature : "
-            cell.textView.text = animal?.feature
-            if animal?.feature == ""{
+            cell.textView.text = animalM?.feature
+            if animalM?.feature == ""{
                 cell.isHidden = true
             }
-
+            
         case 7:
             cell.leftTextView.text = "Behavior : "
-            cell.textView.text = animal?.behavior
-            if animal?.behavior == ""{
+            cell.textView.text = animalM?.behavior
+            if animalM?.behavior == ""{
                 cell.isHidden = true
             }
-
+            
         case 8:
             cell.leftTextView.text = "Diet : "
-           cell.textView.text = animal?.diet
-           if animal?.diet == ""{
-            cell.isHidden = true
-            }
-
-           
-        case 9:
-            cell.leftTextView.text = "Interpretation : "
-            cell.textView.text = animal?.interpretation
-            if animal?.interpretation == ""{
+            cell.textView.text = animalM?.diet
+            if animalM?.diet == ""{
                 cell.isHidden = true
             }
-
+            
+            
+        case 9:
+            cell.leftTextView.text = "Interpretation : "
+            cell.textView.text = animalM?.interpretation
+            if animalM?.interpretation == ""{
+                cell.isHidden = true
+            }
+            
             
         default:
             break
         }
-   
+        
         return cell
     }
     
@@ -299,96 +204,96 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         var height: CGFloat = 20
         let width = UIScreen.main.bounds.width
         switch indexPath.item {
-          
+            
         case 0:
-            if animal?.pic0 == "" || animal?.pic1 == "" || animal?.pic2 == "" || animal?.pic3 == "" || animal?.pic0 == nil {
+            if animalM?.pic0 == nil , animalM?.pic1 == nil , animalM?.pic2 == nil , animalM?.pic3 == nil {
                 height = 0
-            }else if self.i == 0, let imageHeight = animal?.imageHeight0?.floatValue, let imageWidth = animal?.imageWidth0?.floatValue{
+            }else if self.i == 0, let imageHeight = animalM?.imageHeight0, let imageWidth = animalM?.imageWidth0{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
-            }else if self.i == 1, let imageHeight = animal?.imageHeight1?.floatValue, let imageWidth = animal?.imageWidth1?.floatValue{
+            }else if self.i == 1, let imageHeight = animalM?.imageHeight1, let imageWidth = animalM?.imageWidth1{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
                 print(height)
-            }else if self.i == 2, let imageHeight = animal?.imageHeight2?.floatValue, let imageWidth = animal?.imageWidth2?.floatValue{
+            }else if self.i == 2, let imageHeight = animalM?.imageHeight2, let imageWidth = animalM?.imageWidth2{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
-            }else if self.i == 3, let imageHeight = animal?.imageHeight3?.floatValue, let imageWidth = animal?.imageWidth3?.floatValue{
+            }else if self.i == 3, let imageHeight = animalM?.imageHeight3, let imageWidth = animalM?.imageWidth3{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
             }
         case 1:
-            if animal?.name == ""{
+            if animalM?.name == ""{
                 height = 0
             }else{
-                if let text = animal?.name{
+                if let text = animalM?.name{
                     height = estimateFrameForText(text: text).height + 20
                 }
             }
         case 2:
-            if animal?.enName == ""{
+            if animalM?.enName == ""{
                 height = 0
             }else{
-                if let text = animal?.enName{
+                if let text = animalM?.enName{
                     height = estimateFrameForText(text: text).height + 20
                 }
             }
-
+            
         case 3:
-            if animal?.location == ""{
+            if animalM?.location == ""{
                 height = 0
             }else{
-                if let text = animal?.location{
+                if let text = animalM?.location{
                     height = estimateFrameForText(text: text).height + 20
                 }
             }
-
+            
         case 4:
-            if animal?.distribution == ""{
+            if animalM?.distribution == ""{
                 height = 0
             }else{
-                if let text = animal?.distribution{
+                if let text = animalM?.distribution{
                     height = estimateFrameForText(text: text).height + 50
                 }
             }
-
+            
         case 5:
-            if animal?.habitat == ""{
+            if animalM?.habitat == ""{
                 height = 0
             }else{
-                if let text = animal?.habitat{
+                if let text = animalM?.habitat{
                     height = estimateFrameForText(text: text).height + 58
                 }
             }
-  
+            
         case 6:
-            if animal?.feature == ""{
+            if animalM?.feature == ""{
                 height = 0
             }else{
-                if let text = animal?.feature{
+                if let text = animalM?.feature{
                     height = estimateFrameForText(text: text).height + 53
                 }
             }
-       
+            
         case 7:
-            if animal?.behavior == ""{
+            if animalM?.behavior == ""{
                 height = 0
-           
+                
             }else{
-                if let text = animal?.behavior{
+                if let text = animalM?.behavior{
                     height = estimateFrameForText(text: text).height + 60
                 }
             }
-
+            
         case 8:
-            if animal?.diet == ""{
+            if animalM?.diet == ""{
                 height = 0
             }else{
-                if let text = animal?.diet{
+                if let text = animalM?.diet{
                     height = estimateFrameForText(text: text).height + 50
                 }
             }
         case 9:
-            if animal?.interpretation == ""{
-                 height = 0
+            if animalM?.interpretation == ""{
+                height = 0
             }else{
-                if let text = animal?.interpretation{
+                if let text = animalM?.interpretation{
                     height = estimateFrameForText(text: text).height + 58
                 }
             }
@@ -438,21 +343,21 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 // h2 = h1 / w1 * w2
                 var height: CGFloat = 300
                 let width = keyWindow.frame.width
-                if self.animal?.pic0 == "" || self.animal?.pic1 == "" || self.animal?.pic2 == "" || self.animal?.pic3 == "" || self.animal?.pic0 == nil {
+                if self.animalM?.pic0 == nil , self.animalM?.pic1 == nil , self.animalM?.pic2 == nil , self.animalM?.pic3 == nil {
                     height = 0
-                }else if self.i == 0, let imageHeight = self.animal?.imageHeight0?.floatValue, let imageWidth = self.animal?.imageWidth0?.floatValue{
+                }else if self.i == 0, let imageHeight = self.animalM?.imageHeight0, let imageWidth = self.animalM?.imageWidth0{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
-                }else if self.i == 1, let imageHeight = self.animal?.imageHeight1?.floatValue, let imageWidth = self.animal?.imageWidth1?.floatValue{
+                }else if self.i == 1, let imageHeight = self.animalM?.imageHeight1, let imageWidth = self.animalM?.imageWidth1{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
                     print(height)
-                }else if self.i == 2, let imageHeight = self.animal?.imageHeight2?.floatValue, let imageWidth = self.animal?.imageWidth2?.floatValue{
+                }else if self.i == 2, let imageHeight = self.animalM?.imageHeight2, let imageWidth = self.animalM?.imageWidth2{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
-                }else if self.i == 3, let imageHeight = self.animal?.imageHeight3?.floatValue, let imageWidth = self.animal?.imageWidth3?.floatValue{
+                }else if self.i == 3, let imageHeight = self.animalM?.imageHeight3, let imageWidth = self.animalM?.imageWidth3{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
                 }
-                    
-                    //keyWindow是整個app的view
-                    zoomingImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+                
+                //keyWindow是整個app的view
+                zoomingImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
                 
                 zoomingImageView.center = keyWindow.center
                 
@@ -481,8 +386,6 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             
         }
     }
-
-
 
     // MARK: UICollectionViewDelegate
 
@@ -514,25 +417,5 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     
     }
     */
-    func clearCoreDataStore() {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        let context = delegate.persistentContainer.viewContext
-        
-        for i in 0...delegate.persistentContainer.managedObjectModel.entities.count-1 {
-            let entity = delegate.persistentContainer.managedObjectModel.entities[i]
-            
-            do {
-                let query = NSFetchRequest<NSFetchRequestResult>(entityName: entity.name!)
-                let deleterequest = NSBatchDeleteRequest(fetchRequest: query)
-                try context.execute(deleterequest)
-                try context.save()
-                
-            } catch let error as NSError {
-                print("Error: \(error.localizedDescription)")
-                abort()
-            }
-        }
-    }
-
 
 }

@@ -23,14 +23,7 @@
         <attribute name="pic2" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="pic3" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
-    <entity name="Car" representedClassName="Car" syncable="YES" codeGenerationType="class">
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <fetchedProperty name="fetchedProperty" optional="YES" syncable="YES">
-            <fetchRequest name="fetchedPropertyFetchRequest" entity="Car"/>
-        </fetchedProperty>
-    </entity>
     <elements>
         <element name="Animal" positionX="-63" positionY="-18" width="128" height="358"/>
-        <element name="Car" positionX="-54" positionY="144" width="128" height="89"/>
     </elements>
 </model>

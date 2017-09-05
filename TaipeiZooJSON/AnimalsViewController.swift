@@ -19,9 +19,11 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
     
     let cellId = "cellId"
     var animals = [Animal]()
+    var animalM: AnimalM!
     
     var searchResults = [Animal]()
     var searchController = UISearchController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let image = UIImage(named: "addFile")
@@ -30,6 +32,8 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
         navigationItem.title = "TAIPEI ZOO"
 //        navigationController?.navigationBar.topItem?.title = "TAIPEI ZOO"
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+        
+         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)]
         
         fetchAnimal()
         setupSearchController()
@@ -191,7 +195,81 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
             }
         }
         shareAction.backgroundColor = UIColor(r: 48, g: 173, b: 99)
-             return [shareAction]
+        
+        
+        let saveAction = UITableViewRowAction(style: .default, title: "Save") { (action, indexPath) in
+            let animal = self.animals[indexPath.row]
+            if let appDelegate = (UIApplication.shared.delegate as? AppDelegate){
+                self.animalM = AnimalM(context: appDelegate.persistentContainer.viewContext)
+                if let name = animal.name{
+                    self.animalM.name = name
+                }
+                if let enName = animal.enName{
+                    self.animalM.enName = enName
+                }
+                if let location = animal.location{
+                    self.animalM.location = location
+                }
+                if let distribution = animal.distribution{
+                    self.animalM.distribution = distribution
+                }
+                if let habitat = animal.habitat{
+                    self.animalM.habitat = habitat
+                }
+                if let behavior = animal.behavior{
+                    self.animalM.behavior = behavior
+                }
+                if let diet = animal.diet{
+                    self.animalM.diet = diet
+                }
+                if let feature = animal.feature{
+                    self.animalM.feature = feature
+                }
+                if let interpretation = animal.interpretation{
+                    self.animalM.interpretation = interpretation
+                }
+                
+                if let urlString = animal.pic0, animal.pic0 != "",animal.pic0 != nil{
+                    self.animalM.imageHeight0 = animal.imageHeight0 as! Float
+                    self.animalM.imageWidth0 = animal.imageWidth0 as! Float
+                    if let Url = URL(string: urlString)  {
+                        self.animalM.pic0 = NSData(contentsOf: Url)
+                    }
+                }
+                
+                if let urlString = animal.pic1, animal.pic1 != "",animal.pic1 != nil{
+                    self.animalM.imageHeight1 = animal.imageHeight1 as! Float
+                    self.animalM.imageWidth1 = animal.imageWidth1 as! Float
+                    if let Url = URL(string: urlString)  {
+                        self.animalM.pic1 = NSData(contentsOf: Url)
+                    }
+                }
+                
+                if let urlString = animal.pic2, animal.pic2 != "",animal.pic2 != nil{
+                    self.animalM.imageHeight2 = animal.imageHeight2 as! Float
+                    self.animalM.imageWidth2 = animal.imageWidth2 as! Float
+                    if let Url = URL(string: urlString)  {
+                        self.animalM.pic2 = NSData(contentsOf: Url)
+                    }
+                }
+                
+                if let urlString = animal.pic3, animal.pic3 != "",animal.pic3 != nil{
+                    self.animalM.imageHeight3 = animal.imageHeight3 as! Float
+                    self.animalM.imageWidth3 = animal.imageWidth3 as! Float
+                    if let Url = URL(string: urlString)  {
+                        self.animalM.pic2 = NSData(contentsOf: Url)
+                    }
+                }
+                appDelegate.saveContext()
+                let alert = UIAlertController(title: nil, message: "Save Successfully", preferredStyle: .alert)
+                let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
+            }
+
+        }
+        saveAction.backgroundColor = UIColor(r: 218, g: 100, b: 70)
+             return [saveAction,shareAction]
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

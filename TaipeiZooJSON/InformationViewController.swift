@@ -495,21 +495,26 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     }
     
     func handleZoomOut(tapGesture: UITapGestureRecognizer){
-        if let zoomOutImageView = tapGesture.view{
+//        if let zoomOutImageView = tapGesture.view{
+        //           zoomOutImageView.layer.cornerRadius = 10
+        //           zoomOutImageView.clipsToBounds = true
+        //           zoomOutImageView.frame = self.startingFrame!
+        //        }
             //need to animate back out to controller
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 5, options: .curveEaseOut, animations: {
-                zoomOutImageView.layer.cornerRadius = 10
-                zoomOutImageView.clipsToBounds = true
-                zoomOutImageView.frame = self.startingFrame!
+
                 self.scrollView.frame = self.startingFrame!
                 self.blackBackgroundView?.alpha = 0
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (timer) in
+                    self.scrollView.removeFromSuperview()
+                })
+               
             }, completion: { (completed: Bool) in
-                self.scrollView.removeFromSuperview()
 //                zoomOutImageView.removeFromSuperview()
                 self.startingImageView?.isHidden = false
             })
             
-        }
+
     }
 
 

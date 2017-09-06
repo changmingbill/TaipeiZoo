@@ -84,6 +84,9 @@ class InformationCell: UICollectionViewCell {
     func handleZoomTap(tapGesture: UITapGestureRecognizer){
         
         if let imageView = tapGesture.view as? UIImageView{
+            guard imageView.image != nil else{
+                return
+            }
             self.informationViewController?.performZoomInForStaringImageView(startingImageView: imageView)
             self.savingInfoController?.performZoomInForStaringImageView(startingImageView: imageView)
         }

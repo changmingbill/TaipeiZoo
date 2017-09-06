@@ -38,6 +38,8 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
 //        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
 //        navigationController?.navigationBar.topItem?.title = "Back"
 //        clearCoreDataStore()
+        
+        
     }
     
     func Dismiss(){
@@ -406,9 +408,30 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
     }
     
+    override func viewWillLayoutSubviews() {
+        //裝置轉向時，會跟著調整比例
+    }
+    
     var startingFrame: CGRect?
     var blackBackgroundView: UIView?
     var startingImageView: UIView?
+    var scrollView: UIScrollView!
+    var zoomingImageView: UIImageView!
+
+    func setupScrollView(){
+        scrollView.delegate = self
+        scrollView.backgroundColor = UIColor.clear
+        scrollView.layer.cornerRadius = 10
+        scrollView.clipsToBounds = true
+        scrollView.minimumZoomScale = 1
+        scrollView.maximumZoomScale = 3
+        scrollView.zoomScale = 1
+    }
+    
+    override func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return zoomingImageView
+    }
+    
     //my custom zooming logic
     func performZoomInForStaringImageView(startingImageView: UIImageView){
         startingFrame = startingImageView.superview?.convert(startingImageView.frame, to: nil)//取startingImageView size
@@ -416,11 +439,13 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         self.startingImageView = startingImageView
         self.startingImageView?.isHidden = true
         
-        let zoomingImageView = UIImageView(frame: startingFrame!)
+        scrollView = UIScrollView(frame: startingFrame!)//一開始先繼承之前imageView Frame，生成之後有固定框架
+        setupScrollView()
+        zoomingImageView = UIImageView(frame: scrollView.frame)
         zoomingImageView.backgroundColor = UIColor.clear
         zoomingImageView.layer.cornerRadius = 10
         zoomingImageView.clipsToBounds = true
-        zoomingImageView.image = startingImageView.image
+        zoomingImageView.image = startingImageView.image //先塞內容進去再把框變大
         zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
         zoomingImageView.isUserInteractionEnabled = true
         if let keyWindow = UIApplication.shared.keyWindow{
@@ -429,7 +454,9 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             blackBackgroundView?.backgroundColor = UIColor.black
             blackBackgroundView?.alpha = 0 //開始時會看不見
             keyWindow.addSubview(blackBackgroundView!) //這行程式碼在前，所以blackBackgroundView會在zoomingImageView之後呈現
-            keyWindow.addSubview(zoomingImageView)
+            scrollView.addSubview(zoomingImageView)
+            keyWindow.addSubview(scrollView)
+            
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackBackgroundView?.alpha = 1 //從0->1，有動畫漸層效果
@@ -444,7 +471,6 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                     height = CGFloat(imageHeight / imageWidth * Float(width))
                 }else if self.i == 1, let imageHeight = self.animal?.imageHeight1?.floatValue, let imageWidth = self.animal?.imageWidth1?.floatValue{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
-                    print(height)
                 }else if self.i == 2, let imageHeight = self.animal?.imageHeight2?.floatValue, let imageWidth = self.animal?.imageWidth2?.floatValue{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
                 }else if self.i == 3, let imageHeight = self.animal?.imageHeight3?.floatValue, let imageWidth = self.animal?.imageWidth3?.floatValue{
@@ -452,9 +478,11 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 }
                     
                     //keyWindow是整個app的view
-                    zoomingImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
-                
-                zoomingImageView.center = keyWindow.center
+                self.scrollView.frame = CGRect(x: 0, y: 0, width: width, height: height)//觸發之後size變大
+                self.zoomingImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+                self.scrollView.contentSize = self.zoomingImageView.frame.size
+                self.scrollView.center = keyWindow.center//觸發之後位置移到瑩幕中心
+//                self.zoomingImageView.center = keyWindow.center
                 
                 
             }, completion: { (completed) in
@@ -469,13 +497,15 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     func handleZoomOut(tapGesture: UITapGestureRecognizer){
         if let zoomOutImageView = tapGesture.view{
             //need to animate back out to controller
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 2, initialSpringVelocity: 5, options: .curveEaseOut, animations: {
                 zoomOutImageView.layer.cornerRadius = 10
                 zoomOutImageView.clipsToBounds = true
                 zoomOutImageView.frame = self.startingFrame!
+                self.scrollView.frame = self.startingFrame!
                 self.blackBackgroundView?.alpha = 0
             }, completion: { (completed: Bool) in
-                zoomOutImageView.removeFromSuperview()
+                self.scrollView.removeFromSuperview()
+//                zoomOutImageView.removeFromSuperview()
                 self.startingImageView?.isHidden = false
             })
             

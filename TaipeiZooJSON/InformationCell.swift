@@ -8,7 +8,7 @@
 
 import UIKit
 
-class InformationCell: UICollectionViewCell {
+class InformationCell: UICollectionViewCell, UIScrollViewDelegate {
 //    var chatLogController: ChatLogController?
     
     let textView: UITextView = {
@@ -78,11 +78,19 @@ class InformationCell: UICollectionViewCell {
         return imageView
     }()
     
+    var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.layer.cornerRadius = 10
+        scrollView.clipsToBounds = true
+        return scrollView
+    }()
+
+    
     var informationViewController: InformationViewController?
     var savingInfoController: SavingInfoViewController?
     //這個方法主要的目的是要得到messgeImageView，轉換給chatLogController
     func handleZoomTap(tapGesture: UITapGestureRecognizer){
-        
         if let imageView = tapGesture.view as? UIImageView{
             guard imageView.image != nil else{
                 return
@@ -100,8 +108,10 @@ class InformationCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        scrollView.delegate = self
         addSubview(bubbleView)
-        bubbleView.addSubview(animalImageView)
+        scrollView.addSubview(animalImageView)
+        bubbleView.addSubview(scrollView)
         addSubview(leftTextView)
         addSubview(textView)
         addSubview(rightTextView)
@@ -109,10 +119,18 @@ class InformationCell: UICollectionViewCell {
         let screenWidth = UIScreen.main.bounds.width
         
         //x,y,w,h
+        scrollView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
+        scrollView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
+        scrollView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
+//        animalImageView.frame = scrollView.bounds
+        
+//        x,y,w,h
         animalImageView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
         animalImageView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
         animalImageView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
         animalImageView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
+//        scrollView.contentSize = animalImageView.frame.size
         
         //x,y,w,h
         profileImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true

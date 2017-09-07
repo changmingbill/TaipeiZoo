@@ -27,7 +27,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "＜ Back", style: .plain, target: self, action: #selector(PopBack))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "くBack", style: .plain, target: self, action: #selector(PopBack))
         
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)]
         
@@ -87,6 +87,27 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         })
         
     }
+    var scrollView: UIScrollView!
+    func setupScrollView(){
+        let width = UIScreen.main.bounds.width
+        if let imageHeight = animalM?.imageHeight0, let imageWidth = animalM?.imageWidth0{
+            let height = CGFloat(imageHeight / imageWidth * Float(width))
+            let rect = CGRect(x: 0, y: 0, width: width, height: height)
+            scrollView = UIScrollView(frame: rect)
+        }
+        scrollView.delegate = self
+        scrollView.backgroundColor = UIColor.clear
+        scrollView.layer.cornerRadius = 10
+        scrollView.clipsToBounds = true
+        
+//        scrollView.minimumZoomScale = 1
+//        scrollView.maximumZoomScale = 3
+//        scrollView.zoomScale = 1
+    }
+    
+//    override func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+//        return zoomingImageView
+//    }
 
 
     var i = 0
@@ -102,39 +123,71 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             cell.leftTextView.isHidden = true
             cell.rightTextView.isHidden = true
             cell.textView.isHidden = true
-            
+            setupScrollView()
             cell.bubbleView.backgroundColor = UIColor.clear
+            cell.animalImageView.removeFromSuperview()
+            cell.scrollView.addSubview(scrollView)
+            
+            var animalImageViews=[UIImageView]()
             
             if let imageData0 = animalM?.pic0, animalM?.pic0 != nil{
                 imageData.append(imageData0)
-            }
-            if let imageData1 = animalM?.pic1, animalM?.pic1 != nil{
-                imageData.append(imageData1)
-            }
-            if let imageData2 = animalM?.pic2, animalM?.pic2 != nil{
-                imageData.append(imageData2)
-            }
-            if let imageData3 = animalM?.pic3, animalM?.pic3 != nil{
-                imageData.append(imageData3)
+                animalImageViews.append(UIImageView(image: UIImage(data: imageData0 as! Data)))
             }
             
-            if let imageDatum = animalM?.pic0{
-                
-                cell.animalImageView.image = UIImage(data: imageDatum as Data)
-                
-                if imageData.count > 1 {
-                    Timer.scheduledTimer(withTimeInterval: 8, repeats: true, block: { (timer) in
-                        self.i += 1
-                        self.changeImage(indexPath: indexPath, i: self.i, imageData: self.imageData, cell: cell)
-                        
-                        if self.i == self.imageData.count-1{
-                            self.i = 0
-                        }
-                        
-                    })
+            if let imageData1 = animalM?.pic1, animalM?.pic1 != nil{
+                imageData.append(imageData1)
+                animalImageViews.append(UIImageView(image: UIImage(data: imageData1 as! Data)))
+            }
+            
+            if let imageData2 = animalM?.pic2, animalM?.pic2 != nil{
+                imageData.append(imageData2)
+                animalImageViews.append(UIImageView(image: UIImage(data: imageData2 as! Data)))
+            }
+            
+            if let imageData3 = animalM?.pic3, animalM?.pic3 != nil{
+                imageData.append(imageData3)
+                animalImageViews.append(UIImageView(image: UIImage(data: imageData3 as! Data)))
+            }
+            
+            let rect  = scrollView.bounds
+            print(rect)
+            print(imageData.count)
+            print(animalImageViews.count)
+            var size = CGSize()
+            var left: UIImageView? = nil
+            for imageView in animalImageViews{
+               
+                imageView.contentMode = .scaleAspectFill
+                if left == nil{
+                    imageView.frame = rect
+                }else{
+                    imageView.frame = left!.frame.offsetBy(dx: left!.frame.width, dy: 0)
                 }
                 
+                left  = imageView
+                size = CGSize(width: size.width + imageView.frame.size.width, height: rect.size.height)
+                cell.scrollView.addSubview(imageView)
             }
+            cell.scrollView.contentSize = size
+            
+//            if let imageDatum = animalM?.pic0{
+//                
+//                cell.animalImageView.image = UIImage(data: imageDatum as Data)
+//                
+//                if imageData.count > 1 {
+//                    Timer.scheduledTimer(withTimeInterval: 8, repeats: true, block: { (timer) in
+//                        self.i += 1
+//                        self.changeImage(indexPath: indexPath, i: self.i, imageData: self.imageData, cell: cell)
+//                        
+//                        if self.i == self.imageData.count-1{
+//                            self.i = 0
+//                        }
+//                        
+//                    })
+//                }
+//                
+//            }
             
         case 1:
             cell.leftTextView.text = "Name : "

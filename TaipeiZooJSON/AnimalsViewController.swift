@@ -257,7 +257,7 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
                     self.animalM.imageHeight3 = animal.imageHeight3 as! Float
                     self.animalM.imageWidth3 = animal.imageWidth3 as! Float
                     if let Url = URL(string: urlString)  {
-                        self.animalM.pic2 = NSData(contentsOf: Url)
+                        self.animalM.pic3 = NSData(contentsOf: Url)
                     }
                 }
                 appDelegate.saveContext()
@@ -293,8 +293,8 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
             informationController.animalsViewController = self  //推過去時就要先告知
              let animal = (searchController.isActive) ? searchResults[indexPath.row] : animals[indexPath.row]
             informationController.animal = animal
-//        tableView.tableHeaderView = nil
         let navController = UINavigationController(rootViewController: informationController)
+        navController.modalTransitionStyle = .flipHorizontal
         present(navController, animated: true, completion: nil)
 //        navigationController?.pushViewController(informationController, animated: true)
         

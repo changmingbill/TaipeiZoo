@@ -28,18 +28,17 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveToSavingController))
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "＜ Back", style: .plain, target: self, action: #selector(Dismiss))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "くBack", style: .plain, target: self, action: #selector(Dismiss))
         
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)]
         
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)], for: .normal)
         
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)], for: .normal)
-//        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: nil)
-//        navigationController?.navigationBar.topItem?.title = "Back"
-//        clearCoreDataStore()
-        
-        
+//        let cancelBarButtonItem = UIBarButtonItem()
+//        cancelBarButtonItem.setBackgroundVerticalPositionAdjustment(4, for: .default)
+//        vc.navigationItem.setLeftBarButton(cancelBarButtonItem, animated: true)
+            
     }
     
     func Dismiss(){
@@ -126,7 +125,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 self.animalM.imageHeight3 = animal.imageHeight3 as! Float
                 self.animalM.imageWidth3 = animal.imageWidth3 as! Float
                 if let Url = URL(string: urlString)  {
-                    self.animalM.pic2 = NSData(contentsOf: Url)
+                    self.animalM.pic3 = NSData(contentsOf: Url)
                 }
             }
             appDelegate.saveContext()
@@ -187,6 +186,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     }
     
     var i = 0
+//    var animalImageView: UIImageView!
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InformationCell
@@ -199,8 +199,8 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             cell.leftTextView.isHidden = true
             cell.rightTextView.isHidden = true
             cell.textView.isHidden = true
-            
             cell.bubbleView.backgroundColor = UIColor.clear
+            
             
             if let url0 = animal?.pic0, animal?.pic0 != "",animal?.pic0 != nil{
                 imageUrls.append(url0)

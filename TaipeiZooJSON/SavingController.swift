@@ -17,7 +17,7 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "＜ Back", style: .plain, target: self, action: #selector(PopBack))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "くBack", style: .plain, target: self, action: #selector(PopBack))
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         navigationItem.title = "My Favorites"
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)]

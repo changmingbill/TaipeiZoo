@@ -56,6 +56,14 @@ class InformationCell: UICollectionViewCell, UIScrollViewDelegate {
         return view
     }()
     
+    let pageControl: UIPageControl = {
+        let pageControl  = UIPageControl()
+        pageControl.backgroundColor = UIColor.clear
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        return pageControl
+    }()
+
+    
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "gameofthrones")
@@ -78,14 +86,6 @@ class InformationCell: UICollectionViewCell, UIScrollViewDelegate {
         return imageView
     }()
     
-    var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.layer.cornerRadius = 10
-        scrollView.clipsToBounds = true
-        return scrollView
-    }()
-
     
     var informationViewController: InformationViewController?
     var savingInfoController: SavingInfoViewController?
@@ -108,22 +108,23 @@ class InformationCell: UICollectionViewCell, UIScrollViewDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        scrollView.delegate = self
         addSubview(bubbleView)
-        scrollView.addSubview(animalImageView)
-        bubbleView.addSubview(scrollView)
+        bubbleView.addSubview(animalImageView)
+        
         addSubview(leftTextView)
         addSubview(textView)
         addSubview(rightTextView)
         addSubview(profileImageView)
+        addSubview(pageControl)
         let screenWidth = UIScreen.main.bounds.width
         
+        
         //x,y,w,h
-        scrollView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
-        scrollView.rightAnchor.constraint(equalTo: bubbleView.rightAnchor).isActive = true
-        scrollView.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
-//        animalImageView.frame = scrollView.bounds
+        pageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        pageControl.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
+        pageControl.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
+
         
 //        x,y,w,h
         animalImageView.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true

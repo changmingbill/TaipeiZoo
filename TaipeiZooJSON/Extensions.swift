@@ -85,3 +85,9 @@ extension UIColor{
     }
 }
 
+extension UIScrollView {
+    var currentPage:Int{
+        return Int(floor((self.contentOffset.x-(0.5*(self.frame.size.width)))/(self.frame.width))) + 1
+    }
+}
+

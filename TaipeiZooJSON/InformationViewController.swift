@@ -199,6 +199,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             cell.leftTextView.isHidden = true
             cell.rightTextView.isHidden = true
             cell.textView.isHidden = true
+            cell.pageControl.isHidden = true
             cell.bubbleView.backgroundColor = UIColor.clear
             
             
@@ -298,7 +299,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        var height: CGFloat = 20
+        var height: CGFloat = 40
         let width = UIScreen.main.bounds.width
         switch indexPath.item {
           
@@ -355,7 +356,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = 0
             }else{
                 if let text = animal?.habitat{
-                    height = estimateFrameForText(text: text).height + 58
+                    height = estimateFrameForText(text: text).height + 60
                 }
             }
   
@@ -364,7 +365,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = 0
             }else{
                 if let text = animal?.feature{
-                    height = estimateFrameForText(text: text).height + 53
+                    height = estimateFrameForText(text: text).height + 70
                 }
             }
        
@@ -374,7 +375,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
            
             }else{
                 if let text = animal?.behavior{
-                    height = estimateFrameForText(text: text).height + 60
+                    height = estimateFrameForText(text: text).height + 70
                 }
             }
 
@@ -383,7 +384,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = 0
             }else{
                 if let text = animal?.diet{
-                    height = estimateFrameForText(text: text).height + 50
+                    height = estimateFrameForText(text: text).height + 60
                 }
             }
         case 9:
@@ -403,7 +404,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     }
     
     private func estimateFrameForText(text: String) -> CGRect{
-        let size = CGSize(width: 200, height: 1000)
+        let size = CGSize(width: 300, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin) //使用union可以同時包含兩個屬性:usesFontLeading,usesLineFragmentOrigin
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
     }

@@ -131,7 +131,7 @@ class InformationCell: UICollectionViewCell, UIScrollViewDelegate {
         
         //x,y,w,h
         pageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -50).isActive = true
-        pageControl.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+        pageControl.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5).isActive = true
         pageControl.widthAnchor.constraint(equalToConstant: 100).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         

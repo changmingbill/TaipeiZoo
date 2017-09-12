@@ -84,7 +84,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         scrollView.isPagingEnabled = true
         let width0 = UIScreen.main.bounds.width-10
         if animalM?.pic1 != nil{
-            scrollView.contentSize = CGSize(width: (width0 + 10)*CGFloat(imageData.count+1), height: scrollView.bounds.height)
+            scrollView.contentSize = CGSize(width: (width0 + 10)*CGFloat(imageData.count+2), height: scrollView.bounds.height)
         }
         
     }
@@ -93,7 +93,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
 //    var pageDic = [Int: UIImageView]()
 //    var page:Int!
     func loadScrollViewWithPage(_ page:Int, _ data:Data) {
-        if page < 0 {
+        guard page >= 0 else{
             return
         }
 //        else if self.pageDic[page] == nil
@@ -106,6 +106,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
 //            self.pageDic[page] = imageView
 //        }
     }
+    
     
     var pageControl: UIPageControl!
     func setupPageControl(){
@@ -128,7 +129,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         cell.savingInfoController = self //這行不打無法從其他class控制本地端class的函式
         switch indexPath.item {
         case 0:
-            if pageControl == nil {
+            if imageData.count == 0 {
                
             
             if let imageData0 = animalM?.pic0, animalM?.pic0 != nil{
@@ -137,7 +138,6 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             
             if let imageData1 = animalM?.pic1, animalM?.pic1 != nil{
                 imageData[1] = imageData1
-
                 
             }
             
@@ -154,23 +154,23 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             cell.textView.isHidden = true
             setupScrollView()
             setupPageControl()
-            self.pageControl.removeFromSuperview()
             cell.bubbleView.backgroundColor = UIColor.clear
             cell.animalImageView.removeFromSuperview()
-            self.scrollView.removeFromSuperview()
             cell.bubbleView.addSubview(scrollView)
             cell.pageControl.addSubview(pageControl)
             
-            for i in 0...imageData.count-1{
-                loadScrollViewWithPage(i, imageData[i] as! Data)
+            for i in 1...imageData.count{
+                loadScrollViewWithPage(i, imageData[i-1] as! Data)
             }
             
             if imageData.count > 1{
-                loadScrollViewWithPage(imageData.count, imageData[0] as! Data)
+                loadScrollViewWithPage(imageData.count+1, imageData[0] as! Data)
+                loadScrollViewWithPage(0, imageData[imageData.count-1] as! Data)
                
             }else{
                 pageControl.isHidden = true
             }
+                scrollView.contentOffset = CGPoint(x: scrollView.frame.width, y: 0)
             
             }
         case 1:
@@ -201,31 +201,21 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 6:
             cell.leftTextView.text = "Feature : "
             cell.textView.text = animalM?.feature
-//            if animalM?.feature == ""{
-//                cell.isHidden = true
-//            }
+
             
         case 7:
             cell.leftTextView.text = "Behavior : "
             cell.textView.text = animalM?.behavior
-//            if animalM?.behavior == ""{
-//                cell.isHidden = true
-//            }
             
         case 8:
             cell.leftTextView.text = "Diet : "
             cell.textView.text = animalM?.diet
-//            if animalM?.diet == ""{
-//                cell.isHidden = true
-//            }
+
             
             
         case 9:
             cell.leftTextView.text = "Interpretation : "
             cell.textView.text = animalM?.interpretation
-//            if animalM?.interpretation == ""{
-//                cell.isHidden = true
-//            }
             
             
         default:
@@ -352,15 +342,19 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     // MARK: scrollViewDidScroll
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        page = scrollView.currentPage
-//        print(page)
         if imageData.count > 1{
             let i = CGFloat(imageData.count)
-            if scrollView.contentOffset.x == ((scrollView.frame.width)*i) {
+            if scrollView.contentOffset.x == ((scrollView.frame.width)*(i+1)) {//scrollView.contentOffset.x 指的是scrollView.contentSize的x座標
                 Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false, block: { (timer) in
-                    scrollView.contentOffset = CGPoint(x: 0, y: 0)
+                    scrollView.contentOffset = CGPoint(x: scrollView.frame.width, y: 0)
                 })
             }
+            if scrollView.contentOffset.x == 0 {
+                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false, block: { (timer) in
+                    scrollView.contentOffset = CGPoint(x: scrollView.frame.width*i, y: 0)
+                })
+            }
+
           
         }
         
@@ -368,12 +362,13 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         var page = scrollView.currentPage
-        if  page == imageData.count{
-            page = 0
+        if  page == imageData.count+1{
+            page = 1
+        }else if page == 0{
+            page = 4
         }
-        pageControl.currentPage = page
-        print(page)
-        
+        pageControl.currentPage = page-1
+                
     }
     
 

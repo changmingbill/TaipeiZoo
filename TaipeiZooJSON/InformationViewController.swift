@@ -218,20 +218,18 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             if let url3 = animal?.pic3, animal?.pic3 != "", animal?.pic3 != nil{
                 imageUrls.append(url3)
             }
-            
+                
             if let imageUrl = animal?.pic0{
                 
                 cell.animalImageView.loadImageWithoutCacheWithUrlString(urlString: imageUrl)
                 
                 if imageUrls.count > 1 {
-                    Timer.scheduledTimer(withTimeInterval: 8, repeats: true, block: { (timer) in
-                        self.i += 1
-                        self.changeImage(indexPath: indexPath, i: self.i, imageUrls: self.imageUrls, cell: cell)
-                        
+                       Timer.scheduledTimer(withTimeInterval: 8, repeats: true, block: { (timer) in
                         if self.i == self.imageUrls.count-1{
                             self.i = 0
                         }
-                        
+                        self.i += 1
+                        self.changeImage(indexPath: indexPath, i: self.i, imageUrls: self.imageUrls, cell: cell)
                     })
                 }
                 

@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-private let reuseIdentifier = "Cell"
+private let reuseIdentifiers = ["cell_1","cell_2","cell_3","cell_4","cell_5","cell_6","cell_7","cell_8","cell_9","cell_10"]
 
 class InformationViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -24,7 +24,9 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         if let titleName = animal?.name{
             navigationItem.title = titleName
         }
-        self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        for i in 0...9{
+            self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifiers[i])
+        }
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveToSavingController))
         
@@ -49,7 +51,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
 
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
+        return 0
     }
     
     var animalsViewController: AnimalsViewController? //原本已存在設定AnimalsViewController?，不用實體化
@@ -189,13 +191,14 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
 //    var animalImageView: UIImageView!
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InformationCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifiers[indexPath.item], for: indexPath) as! InformationCell
         
         cell.informationViewController = self //這行不打無法從其他class控制本地端class的函式
         
         switch indexPath.item {
             
         case 0:
+            if imageUrls.count == 0{
             cell.leftTextView.isHidden = true
             cell.rightTextView.isHidden = true
             cell.textView.isHidden = true
@@ -232,8 +235,8 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                     })
                 }
                 
+              }
             }
-  
         case 1:
             cell.leftTextView.text = "Name : "
             cell.rightTextView.text = animal?.name
@@ -347,7 +350,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = 0
             }else{
                 if let text = animal?.distribution{
-                    height = estimateFrameForText(text: text).height + 50
+                    height = estimateFrameForText(text: text).height + 60
                 }
             }
 
@@ -365,7 +368,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 height = 0
             }else{
                 if let text = animal?.feature{
-                    height = estimateFrameForText(text: text).height + 70
+                    height = estimateFrameForText(text: text).height + 60
                 }
             }
        
@@ -375,7 +378,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
            
             }else{
                 if let text = animal?.behavior{
-                    height = estimateFrameForText(text: text).height + 70
+                    height = estimateFrameForText(text: text).height + 60
                 }
             }
 
@@ -392,7 +395,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                  height = 0
             }else{
                 if let text = animal?.interpretation{
-                    height = estimateFrameForText(text: text).height + 58
+                    height = estimateFrameForText(text: text).height + 60
                 }
             }
         default:
@@ -404,7 +407,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
     }
     
     private func estimateFrameForText(text: String) -> CGRect{
-        let size = CGSize(width: 300, height: 1000)
+        let size = CGSize(width: 200, height: 1500)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin) //使用union可以同時包含兩個屬性:usesFontLeading,usesLineFragmentOrigin
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
     }

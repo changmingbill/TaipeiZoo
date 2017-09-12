@@ -62,6 +62,15 @@ class InformationCell: UICollectionViewCell, UIScrollViewDelegate {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
+    
+    let separatedLine: UIView = {
+            let view  = UIView()
+            view.backgroundColor = blueColor
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = UIColor.white
+            return view
+    }()
+
 
     
     let profileImageView: UIImageView = {
@@ -116,14 +125,21 @@ class InformationCell: UICollectionViewCell, UIScrollViewDelegate {
         addSubview(rightTextView)
         addSubview(profileImageView)
         addSubview(pageControl)
+        addSubview(separatedLine)
         let screenWidth = UIScreen.main.bounds.width
         
         
         //x,y,w,h
-        pageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        pageControl.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true
+        pageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -50).isActive = true
+        pageControl.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
         pageControl.widthAnchor.constraint(equalToConstant: 100).isActive = true
         pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        
+        //x,y,w,h
+        separatedLine.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        separatedLine.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        separatedLine.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        separatedLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
         
 //        x,y,w,h

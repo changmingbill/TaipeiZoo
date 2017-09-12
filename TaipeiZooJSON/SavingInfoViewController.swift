@@ -8,33 +8,37 @@
 
 import UIKit
 import CoreData
-private let reuseIdentifier = "Cell"
-private let ImageIdentifier = "Cell"
+private let reuseIdentifiers = ["cell_1","cell_2","cell_3","cell_4","cell_5","cell_6","cell_7","cell_8","cell_9","cell_10"]
 class SavingInfoViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    
+    
     
     var timer: Timer?
     var animalM: AnimalM?
-    var imageData = [Any]()
+    var imageData = [Int:Any]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.alwaysBounceVertical = true //可以維持collectionView顯示保持回彈狀態
         collectionView?.backgroundColor = UIColor.white // view.backgroundColor = UIColor.white這個沒效果
         collectionView?.contentInset = UIEdgeInsets(top: 1, left: 0, bottom: 8, right: 0) //設定collectionView與view間的邊界條件
-        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 300, bottom: 0, right: 0)
+//        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 300, left: 0, bottom: 0, right: 0)
         if let titleName = animalM?.name{
             navigationItem.title = titleName
         }
-        self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        for i in 0...9{
+            self.collectionView!.register(InformationCell.self, forCellWithReuseIdentifier: reuseIdentifiers[i])
+        }
         
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "くBack", style: .plain, target: self, action: #selector(PopBack))
+       
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "く", style: .plain, target: self, action: #selector(PopBack))
         
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)]
         
         navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)], for: .normal)
         
         navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)], for: .normal)
+        
     }
     
     func Dismiss(){
@@ -64,6 +68,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return 10
+        
     }
     
     var scrollView: UIScrollView!
@@ -76,8 +81,6 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         }
         scrollView.delegate = self
         scrollView.backgroundColor = UIColor.clear
-//        scrollView.layer.cornerRadius = 10
-//        scrollView.clipsToBounds = true
         scrollView.isPagingEnabled = true
         let width0 = UIScreen.main.bounds.width-10
         if animalM?.pic1 != nil{
@@ -106,9 +109,10 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     
     var pageControl: UIPageControl!
     func setupPageControl(){
-        pageControl = UIPageControl(frame: CGRect(x: -50, y: 5, width: 100, height: 20))
+        pageControl = UIPageControl(frame: CGRect(x: 0, y: 0, width: 100, height: 20))
         pageControl.numberOfPages = imageData.count
-        pageControl.currentPageIndicatorTintColor = UIColor(r: 204, g: 255, b: 102)
+//        pageControl.currentPageIndicatorTintColor = UIColor(r: 204, g: 255, b: 102)
+        pageControl.currentPageIndicatorTintColor = UIColor.yellow
         pageControl.pageIndicatorTintColor = UIColor(r: 192, g: 210, b: 241)
     }
    
@@ -120,27 +124,29 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     var i = 0
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InformationCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifiers[indexPath.item], for: indexPath) as! InformationCell
         cell.savingInfoController = self //這行不打無法從其他class控制本地端class的函式
-        
         switch indexPath.item {
-            
         case 0:
+            if pageControl == nil {
+               
+            
             if let imageData0 = animalM?.pic0, animalM?.pic0 != nil{
-                imageData.append(imageData0)
+                imageData[0] = imageData0
             }
             
             if let imageData1 = animalM?.pic1, animalM?.pic1 != nil{
-                imageData.append(imageData1)
+                imageData[1] = imageData1
+
+                
             }
             
             if let imageData2 = animalM?.pic2, animalM?.pic2 != nil{
-                imageData.append(imageData2)
+                imageData[2] = imageData2
             }
             
             if let imageData3 = animalM?.pic3, animalM?.pic3 != nil{
-                imageData.append(imageData3)
+                imageData[3] = imageData3
             }
 
             cell.leftTextView.isHidden = true
@@ -148,13 +154,12 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             cell.textView.isHidden = true
             setupScrollView()
             setupPageControl()
+            self.pageControl.removeFromSuperview()
             cell.bubbleView.backgroundColor = UIColor.clear
             cell.animalImageView.removeFromSuperview()
+            self.scrollView.removeFromSuperview()
             cell.bubbleView.addSubview(scrollView)
             cell.pageControl.addSubview(pageControl)
-            
-            
-            
             
             for i in 0...imageData.count-1{
                 loadScrollViewWithPage(i, imageData[i] as! Data)
@@ -166,9 +171,8 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             }else{
                 pageControl.isHidden = true
             }
-
             
-            
+            }
         case 1:
             cell.leftTextView.text = "Name : "
             cell.rightTextView.text = animalM?.name
@@ -229,12 +233,11 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         }
         
         return cell
+        
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let layout:UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         
         var height: CGFloat = 20
         let width = UIScreen.main.bounds.width
@@ -243,7 +246,6 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 0:
             if animalM?.pic0 == nil , animalM?.pic1 == nil , animalM?.pic2 == nil , animalM?.pic3 == nil {
                 height = 0
-                layout.minimumLineSpacing = 0
             }else if self.i == 0, let imageHeight = animalM?.imageHeight0, let imageWidth = animalM?.imageWidth0{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
             }else if self.i == 1, let imageHeight = animalM?.imageHeight1, let imageWidth = animalM?.imageWidth1{
@@ -258,7 +260,6 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 1:
             if animalM?.name == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
             }else{
                 if let text = animalM?.name{
                     height = estimateFrameForText(text: text).height + 20
@@ -267,7 +268,6 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 2:
             if animalM?.enName == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
             }else{
                 if let text = animalM?.enName{
                     height = estimateFrameForText(text: text).height + 20
@@ -277,7 +277,6 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 3:
             if animalM?.location == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
             }else{
                 if let text = animalM?.location{
                     height = estimateFrameForText(text: text).height + 20
@@ -287,7 +286,6 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 4:
             if animalM?.distribution == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
             }else{
                 if let text = animalM?.distribution{
                     height = estimateFrameForText(text: text).height + 50
@@ -297,38 +295,34 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 5:
             if animalM?.habitat == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
             }else{
                 if let text = animalM?.habitat{
-                    height = estimateFrameForText(text: text).height + 90
+                    height = estimateFrameForText(text: text).height + 70
                 }
             }
             
         case 6:
             if animalM?.feature == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
             }else{
                 if let text = animalM?.feature{
-                    height = estimateFrameForText(text: text).height + 90
+                    height = estimateFrameForText(text: text).height + 70
                 }
             }
             
         case 7:
             if animalM?.behavior == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
                 
             }else{
                 if let text = animalM?.behavior{
-                    height = estimateFrameForText(text: text).height + 90
+                    height = estimateFrameForText(text: text).height + 70
                 }
             }
             
         case 8:
             if animalM?.diet == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
             }else{
                 if let text = animalM?.diet{
                     height = estimateFrameForText(text: text).height + 70
@@ -337,22 +331,20 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 9:
             if animalM?.interpretation == ""{
                 height = 0
-                layout.minimumLineSpacing = 0
             }else{
                 if let text = animalM?.interpretation{
-                    height = estimateFrameForText(text: text).height + 58
+                    height = estimateFrameForText(text: text).height + 70
                 }
             }
         default:
             break
         }
         
-        
         return CGSize(width: width, height: height)
     }
     
     private func estimateFrameForText(text: String) -> CGRect{
-        let size = CGSize(width: 350, height: 3000)
+        let size = CGSize(width: 200, height: 1500)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin) //使用union可以同時包含兩個屬性:usesFontLeading,usesLineFragmentOrigin
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 12)], context: nil)
     }
@@ -380,6 +372,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             page = 0
         }
         pageControl.currentPage = page
+        print(page)
         
     }
     

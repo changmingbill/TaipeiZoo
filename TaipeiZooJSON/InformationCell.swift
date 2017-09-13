@@ -105,7 +105,7 @@ class InformationCell: UICollectionViewCell, UIScrollViewDelegate {
                 return
             }
             self.informationViewController?.performZoomInForStaringImageView(startingImageView: imageView)
-            self.savingInfoController?.performZoomInForStaringImageView(startingImageView: imageView)
+//            self.savingInfoController?.performZoomInForStaringImageView(startingImageView: imageView)
         }
         
     }

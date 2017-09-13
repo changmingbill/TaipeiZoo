@@ -15,13 +15,13 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     
     var timer: Timer?
     var animalM: AnimalM?
-    var imageData = [Int:Any]()
+    var imageData = [Any]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.alwaysBounceVertical = true //可以維持collectionView顯示保持回彈狀態
         collectionView?.backgroundColor = UIColor.white // view.backgroundColor = UIColor.white這個沒效果
-        collectionView?.contentInset = UIEdgeInsets(top: 1, left: 0, bottom: 8, right: 0) //設定collectionView與view間的邊界條件
+//        collectionView?.contentInset = UIEdgeInsets(top: 1, left: 0, bottom: 8, right: 0) //設定collectionView與view間的邊界條件
 //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 300, left: 0, bottom: 0, right: 0)
         if let titleName = animalM?.name{
             navigationItem.title = titleName
@@ -79,12 +79,11 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             let rect = CGRect(x: 0, y: 0, width: width, height: height)
             scrollView = UIScrollView(frame: rect)
         }
-        scrollView.delegate = self
         scrollView.backgroundColor = UIColor.clear
         scrollView.isPagingEnabled = true
         let width0 = UIScreen.main.bounds.width-10
         if animalM?.pic1 != nil{
-            scrollView.contentSize = CGSize(width: (width0 + 10)*CGFloat(imageData.count+2), height: scrollView.bounds.height)
+            scrollView.contentSize = CGSize(width: (width0 + 10)*CGFloat(imageData.count+3), height: scrollView.bounds.height)
         }
         
     }
@@ -101,10 +100,23 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             let width = UIScreen.main.bounds.width-10
             let imageView = UIImageView(frame: CGRect(x: (width + 10)*CGFloat(page), y: 0, width:width, height:scrollView.bounds.height))
             imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
             imageView.image = UIImage(data: data)
+            imageView.isUserInteractionEnabled = true
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
             self.scrollView.addSubview(imageView)
 //            self.pageDic[page] = imageView
 //        }
+    }
+    
+    func handleZoomTap(tapGesture: UITapGestureRecognizer){
+        if let imageView = tapGesture.view as? UIImageView{
+            guard imageView.image != nil else{
+                return
+            }
+            performZoomInForStaringImageView(startingImageView: imageView)
+        }
+        
     }
     
     
@@ -122,37 +134,38 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
 //    }
 
 
-    var i = 0
+    var page = 0
+
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifiers[indexPath.item], for: indexPath) as! InformationCell
         cell.savingInfoController = self //這行不打無法從其他class控制本地端class的函式
         switch indexPath.item {
         case 0:
-            if imageData.count == 0 {
-               
+            if pageControl == nil {
             
             if let imageData0 = animalM?.pic0, animalM?.pic0 != nil{
-                imageData[0] = imageData0
+                imageData.append(imageData0)
             }
             
             if let imageData1 = animalM?.pic1, animalM?.pic1 != nil{
-                imageData[1] = imageData1
+                imageData.append(imageData1)
                 
             }
             
             if let imageData2 = animalM?.pic2, animalM?.pic2 != nil{
-                imageData[2] = imageData2
+                imageData.append(imageData2)
             }
             
             if let imageData3 = animalM?.pic3, animalM?.pic3 != nil{
-                imageData[3] = imageData3
+                imageData.append(imageData3)
             }
 
             cell.leftTextView.isHidden = true
             cell.rightTextView.isHidden = true
             cell.textView.isHidden = true
             setupScrollView()
+            self.scrollView.delegate = self
             setupPageControl()
             cell.bubbleView.backgroundColor = UIColor.clear
             cell.animalImageView.removeFromSuperview()
@@ -160,17 +173,17 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             cell.pageControl.addSubview(pageControl)
             
             for i in 1...imageData.count{
-                loadScrollViewWithPage(i, imageData[i-1] as! Data)
+                loadScrollViewWithPage(i+1, imageData[i-1] as! Data)
             }
             
             if imageData.count > 1{
-                loadScrollViewWithPage(imageData.count+1, imageData[0] as! Data)
-                loadScrollViewWithPage(0, imageData[imageData.count-1] as! Data)
+                loadScrollViewWithPage(imageData.count+2, imageData[0] as! Data)
+                loadScrollViewWithPage(1, imageData[imageData.count-1] as! Data)
                
             }else{
                 pageControl.isHidden = true
             }
-                scrollView.contentOffset = CGPoint(x: scrollView.frame.width, y: 0)
+                scrollView.contentOffset = CGPoint(x: scrollView.frame.width*2, y: 0)
             
             }
         case 1:
@@ -188,16 +201,10 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 4:
             cell.leftTextView.text = "Distribution : "
             cell.textView.text = animalM?.distribution
-            if animalM?.distribution == ""{
-                cell.isHidden = true
-            }
             
         case 5:
             cell.leftTextView.text = "Habitat : "
             cell.textView.text = animalM?.habitat
-            if animalM?.habitat == ""{
-                cell.isHidden = true
-            }
         case 6:
             cell.leftTextView.text = "Feature : "
             cell.textView.text = animalM?.feature
@@ -236,14 +243,14 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         case 0:
             if animalM?.pic0 == nil , animalM?.pic1 == nil , animalM?.pic2 == nil , animalM?.pic3 == nil {
                 height = 0
-            }else if self.i == 0, let imageHeight = animalM?.imageHeight0, let imageWidth = animalM?.imageWidth0{
+            }else if self.page == 0, let imageHeight = animalM?.imageHeight0, let imageWidth = animalM?.imageWidth0{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
-            }else if self.i == 1, let imageHeight = animalM?.imageHeight1, let imageWidth = animalM?.imageWidth1{
+            }else if self.page == 1, let imageHeight = animalM?.imageHeight1, let imageWidth = animalM?.imageWidth1{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
                 print(height)
-            }else if self.i == 2, let imageHeight = animalM?.imageHeight2, let imageWidth = animalM?.imageWidth2{
+            }else if self.page == 2, let imageHeight = animalM?.imageHeight2, let imageWidth = animalM?.imageWidth2{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
-            }else if self.i == 3, let imageHeight = animalM?.imageHeight3, let imageWidth = animalM?.imageWidth3{
+            }else if self.page == 3, let imageHeight = animalM?.imageHeight3, let imageWidth = animalM?.imageWidth3{
                 height = CGFloat(imageHeight / imageWidth * Float(width))
             }
             
@@ -344,31 +351,29 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if imageData.count > 1{
             let i = CGFloat(imageData.count)
-            if scrollView.contentOffset.x == ((scrollView.frame.width)*(i+1)) {//scrollView.contentOffset.x 指的是scrollView.contentSize的x座標
+            if scrollView.contentOffset.x == (scrollView.frame.width)*(i+2) {//scrollView.contentOffset.x 指的是scrollView.contentSize的x座標
                 Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false, block: { (timer) in
-                    scrollView.contentOffset = CGPoint(x: scrollView.frame.width, y: 0)
+                    scrollView.contentOffset = CGPoint(x: scrollView.frame.width*2, y: 0)
                 })
             }
-            if scrollView.contentOffset.x == 0 {
+            if scrollView.contentOffset.x == scrollView.frame.width {
                 Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false, block: { (timer) in
-                    scrollView.contentOffset = CGPoint(x: scrollView.frame.width*i, y: 0)
+                    scrollView.contentOffset = CGPoint(x: scrollView.frame.width*(i+1), y: 0)
                 })
             }
-
-          
         }
-        
     }
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         var page = scrollView.currentPage
-        if  page == imageData.count+1{
-            page = 1
-        }else if page == 0{
-            page = 4
+        if  page == imageData.count+2{
+            page = 2
+        }else if page == 1{
+            page = imageData.count+1
         }
-        pageControl.currentPage = page-1
-                
+        pageControl.currentPage = page-2
+        self.page = page-2
+        
     }
     
 
@@ -407,14 +412,14 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
                 let width = keyWindow.frame.width
                 if self.animalM?.pic0 == nil , self.animalM?.pic1 == nil , self.animalM?.pic2 == nil , self.animalM?.pic3 == nil {
                     height = 0
-                }else if self.i == 0, let imageHeight = self.animalM?.imageHeight0, let imageWidth = self.animalM?.imageWidth0{
+                }else if self.page == 0, let imageHeight = self.animalM?.imageHeight0, let imageWidth = self.animalM?.imageWidth0{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
-                }else if self.i == 1, let imageHeight = self.animalM?.imageHeight1, let imageWidth = self.animalM?.imageWidth1{
+                }else if self.page == 1, let imageHeight = self.animalM?.imageHeight1, let imageWidth = self.animalM?.imageWidth1{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
                     print(height)
-                }else if self.i == 2, let imageHeight = self.animalM?.imageHeight2, let imageWidth = self.animalM?.imageWidth2{
+                }else if self.page == 2, let imageHeight = self.animalM?.imageHeight2, let imageWidth = self.animalM?.imageWidth2{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
-                }else if self.i == 3, let imageHeight = self.animalM?.imageHeight3, let imageWidth = self.animalM?.imageWidth3{
+                }else if self.page == 3, let imageHeight = self.animalM?.imageHeight3, let imageWidth = self.animalM?.imageWidth3{
                     height = CGFloat(imageHeight / imageWidth * Float(width))
                 }
                 

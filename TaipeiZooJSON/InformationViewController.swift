@@ -181,10 +181,7 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             cell.animalImageView.loadImageWithoutCacheWithUrlString(urlString: imageUrls[i])
 //            self.collectionView?.reloadItems(at: [indexPath])
          }, completion: { (completed) in
-
         })
-        
-
     }
     
     var i = 0
@@ -288,8 +285,6 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
             if animal?.interpretation == ""{
                 cell.isHidden = true
             }
-
-            
         default:
             break
         }
@@ -486,11 +481,9 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
                 self.scrollView.center = keyWindow.center//觸發之後位置移到瑩幕中心
 //                self.zoomingImageView.center = keyWindow.center
                 
-                
             }, completion: { (completed) in
                 //                zoomOutImageView.removeFromSuperview()
             })
-            
             
         }
         

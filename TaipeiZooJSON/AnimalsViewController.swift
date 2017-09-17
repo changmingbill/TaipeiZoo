@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 import CoreData
-class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
+class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate{
    
     let reachability = Reachability(hostName: "www.apple.com")
     let zooAPISite = "http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=a3e2b221-75e0-45c1-8f97-75acbd43d613"
@@ -30,7 +30,6 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(showSavingControllerForAnimal))
         
         navigationItem.title = "TAIPEI ZOO"
-//        navigationController?.navigationBar.topItem?.title = "TAIPEI ZOO"
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
          navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(r: 5, g: 122, b: 251), NSFontAttributeName: UIFont.systemFont(ofSize: 21)]
@@ -42,9 +41,11 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        checkIfUserIsLoggedIn()
-//        downloadWithSession(WebSite: zooAPISite)
+//        checkIfUserIsLoggedIn()
+//         downloadWithSession(WebSite: zooAPISite)
     }
+
+    
     
     func Dismiss(){
         dismiss(animated: true) {
@@ -85,11 +86,6 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
         searchResults = animals.filter({ (animal) -> Bool in
             
             if let name = animal.name, let enName = animal.enName{
-                //                if let name = restaurant.name, let location = restaurant.location {
-                //                    let isMatch = name.localizedCaseInsensitiveContains(searchText) || location.localizedCaseInsensitiveContains(searchText)
-                //                    return isMatch
-                //                }
-                
                 let isMatchName = name.localizedCaseInsensitiveContains(searchText)
                 let isMatchEnName = enName.localizedCaseInsensitiveContains(searchText)
                 
@@ -283,8 +279,6 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
         }else{
             return animals.count
         }
-
-        
     }
     
     
@@ -303,22 +297,89 @@ class AnimalsViewController: UITableViewController, UISearchResultsUpdating, UIS
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! UserCell
-//        let animal = animals[indexPath.row]
         
-        
-         let animal = (searchController.isActive) ? searchResults[indexPath.row] : animals[indexPath.row]
-        
+        let animal = (searchController.isActive) ? searchResults[indexPath.row] : animals[indexPath.row]
+
         cell.textLabel?.text = animal.name
         cell.detailTextLabel?.text = animal.enName
-        if let urlString = animal.pic0, animal.pic0 != ""{
-            cell.animalImageView.loadImageWithoutCacheWithUrlString(urlString: urlString)
-        }else{
-            cell.animalImageView.image = UIImage(named: "Panda")
-        }
+        
+        if let urlString = animal.pic0, let name = animal.name, animal.pic0 != "",animal.name != ""{
+            
+            if UserDefaults.standard.object(forKey: name) == nil{
+                urlStringSaveToFile(urlString: urlString, fileName: name)
+            }
 
+            if let imageData = UserDefaults.standard.object(forKey: name){
+            if let image = UIImage(data: imageData as! Data){
+               cell.animalImageView.image = image
+            }
+            }
+                        else{
+                 cell.animalImageView.loadImageUsingCacheWithUrlString(urlString: urlString)
+            }
+        }
         
         return cell
     }
+    
+    func urlStringSaveToFile(urlString: String, fileName: String){
+//        print(filePath)
+//        let session = URLSession(configuration: URLSessionConfiguration.default)
+//        let fileURL = URL(fileURLWithPath: filePath)
+        
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+            //download hit an error so lets return out
+            if error != nil{
+                print(error)
+                return
+            }
+            DispatchQueue.main.async {
+             if let imageData = data{
+                guard UserDefaults.standard.object(forKey: fileName) == nil else{
+                    return
+                }
+                UserDefaults.standard.set(imageData, forKey: fileName)
+                UserDefaults.standard.synchronize()
+//                print("Save Successfully")
+//                self.saveToFile(data: data!, fileURL: fileURL)
+             }
+            }
+            
+        }).resume()
+
+    }
+    
+    func saveToFile(data: Data, fileURL: URL){
+        do{
+            print(fileURL)
+            print(data)
+            try data.write(to: fileURL)
+        }catch{
+            print("Save Fail")
+        }
+        
+    }
+    
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        
+        
+        image.draw(in: CGRect(x: 0, y: 0,width: newWidth, height: newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+
+
+    
     
 
     /*

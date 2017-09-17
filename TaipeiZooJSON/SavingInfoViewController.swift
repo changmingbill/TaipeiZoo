@@ -89,14 +89,11 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     }
     
     
-//    var pageDic = [Int: UIImageView]()
-//    var page:Int!
     func loadScrollViewWithPage(_ page:Int, _ data:Data) {
-        guard page >= 0 else{
+        if page < 0 {
             return
+            
         }
-//        else if self.pageDic[page] == nil
-//        {
             let width = UIScreen.main.bounds.width-10
             let imageView = UIImageView(frame: CGRect(x: (width + 10)*CGFloat(page), y: 0, width:width, height:scrollView.bounds.height))
             imageView.contentMode = .scaleAspectFill
@@ -105,8 +102,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             imageView.isUserInteractionEnabled = true
             imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomTap)))
             self.scrollView.addSubview(imageView)
-//            self.pageDic[page] = imageView
-//        }
+        
     }
     
     func handleZoomTap(tapGesture: UITapGestureRecognizer){
@@ -128,12 +124,7 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         pageControl.currentPageIndicatorTintColor = UIColor.yellow
         pageControl.pageIndicatorTintColor = UIColor(r: 192, g: 210, b: 241)
     }
-   
-//    override func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-//        return zoomingImageView
-//    }
-
-
+    
     var page = 0
 
     
@@ -165,7 +156,9 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
             cell.rightTextView.isHidden = true
             cell.textView.isHidden = true
             setupScrollView()
+            setupzoomingScrollView()
             self.scrollView.delegate = self
+            self.zoomingScrollView.delegate = self
             setupPageControl()
             cell.bubbleView.backgroundColor = UIColor.clear
             cell.animalImageView.removeFromSuperview()
@@ -186,6 +179,8 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
                 scrollView.contentOffset = CGPoint(x: scrollView.frame.width*2, y: 0)
             
             }
+            
+            
         case 1:
             cell.leftTextView.text = "Name : "
             cell.rightTextView.text = animalM?.name
@@ -361,11 +356,13 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
                     scrollView.contentOffset = CGPoint(x: scrollView.frame.width*(i+1), y: 0)
                 })
             }
+            
         }
     }
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         var page = scrollView.currentPage
+//        print(page)
         if  page == imageData.count+2{
             page = 2
         }else if page == 1{
@@ -376,35 +373,149 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
         
     }
     
-
-    
+    // MARK: Zooming Setting
     var startingFrame: CGRect?
     var blackBackgroundView: UIView?
     var startingImageView: UIView?
+    var pageDic = [Int:UIScrollView]()
+    var pageImageViewDic = [Int:UIImageView]()
+    var imageView:UIImageView!
+    
+    var zoomingPageControl: UIPageControl!
+    func setupZoomingPageControl(){
+        zoomingPageControl = UIPageControl(frame: CGRect(x: UIScreen.main.bounds.width/2-50, y: UIScreen.main.bounds.height-50, width: 100, height: 50))
+        zoomingPageControl.numberOfPages = imageData.count
+        zoomingPageControl.currentPageIndicatorTintColor = UIColor.yellow
+        zoomingPageControl.pageIndicatorTintColor = UIColor.orange
+    }
+
+    var zoomingScrollView: UIScrollView!
+    func setupzoomingScrollView(){
+        self.zoomingScrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        zoomingScrollView.isPagingEnabled = true
+        zoomingScrollView.backgroundColor = UIColor.clear
+        if animalM?.pic1 != nil{
+            zoomingScrollView.contentSize = CGSize(width: (UIScreen.main.bounds.width)*CGFloat(imageData.count+3), height:zoomingScrollView.bounds.height)
+        }
+        
+    }
+
+    func loadScrollViewWithZoomingPage(_ page:Int, _ data:Data, _ dataN:Int) {
+        if page < 0 {
+            return
+        }
+        else if self.pageDic[page] == nil{
+        var height: CGFloat = 300
+        let width = UIScreen.main.bounds.size.width
+        if self.animalM?.pic0 == nil , self.animalM?.pic1 == nil , self.animalM?.pic2 == nil , self.animalM?.pic3 == nil {
+            height = 0
+        }else if dataN == 0, let imageHeight = self.animalM?.imageHeight0, let imageWidth = self.animalM?.imageWidth0{
+            height = CGFloat(imageHeight / imageWidth * Float(width))
+        }else if dataN == 1, let imageHeight = self.animalM?.imageHeight1, let imageWidth = self.animalM?.imageWidth1{
+            height = CGFloat(imageHeight / imageWidth * Float(width))
+        }else if dataN == 2, let imageHeight = self.animalM?.imageHeight2, let imageWidth = self.animalM?.imageWidth2{
+            height = CGFloat(imageHeight / imageWidth * Float(width))
+        }else if dataN == 3, let imageHeight = self.animalM?.imageHeight3, let imageWidth = self.animalM?.imageWidth3{
+            height = CGFloat(imageHeight / imageWidth * Float(width))
+        }
+
+        let scrollView = UIScrollView(frame: CGRect(x: (width)*CGFloat(page), y: UIScreen.main.bounds.height/2-height/2, width: width, height: height))
+            scrollView.contentSize = scrollView.bounds.size
+            scrollView.delegate = self
+            scrollView.layer.cornerRadius = 10
+            scrollView.clipsToBounds = true
+            scrollView.backgroundColor = UIColor.black
+            scrollView.maximumZoomScale = 2
+            scrollView.minimumZoomScale = 1
+            scrollView.zoomScale = 1
+            
+            imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+//            imageView = UIImageView(frame: scrollView.frame)
+            scrollView.addSubview(imageView)
+            imageView.contentMode = .scaleAspectFill//要寫在imageView.image之前，否則會比例會跑掉
+            imageView.layer.cornerRadius = 10
+            imageView.clipsToBounds = true
+            imageView.image = UIImage(data: data)
+            scrollView.addSubview(imageView)
+            imageView.isUserInteractionEnabled = true
+            imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
+            
+            self.pageDic[page] = scrollView
+            self.pageImageViewDic[page] = imageView
+            self.zoomingScrollView.addSubview(scrollView)
+        }
+    }
+    //MARK: func viewForZooming(in scrollView: UIScrollView)
+    override func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+       return scrollView.subviews.first
+    }
+
+    func removeScrollViewWithPage(page:Int) {
+        if page < 0{
+            return
+        }
+        else if pageDic[page] != nil, pageImageViewDic != nil
+        {
+            self.pageDic[page]?.removeFromSuperview()
+            self.pageDic[page] = nil
+            self.pageImageViewDic[page]?.removeFromSuperview()
+            self.pageImageViewDic[page] = nil
+        } }
+    
     //my custom zooming logic
     func performZoomInForStaringImageView(startingImageView: UIImageView){
         startingFrame = startingImageView.superview?.convert(startingImageView.frame, to: nil)//取startingImageView size
-        
+        setupZoomingPageControl()
         self.startingImageView = startingImageView
         self.startingImageView?.isHidden = true
         
-        let zoomingImageView = UIImageView(frame: startingFrame!)
-        zoomingImageView.backgroundColor = UIColor.clear
-        zoomingImageView.layer.cornerRadius = 10
-        zoomingImageView.clipsToBounds = true
-        zoomingImageView.image = startingImageView.image
-        zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
-        zoomingImageView.isUserInteractionEnabled = true
+        for i in 1...imageData.count{
+            loadScrollViewWithZoomingPage(i+1, imageData[i-1] as! Data, i-1)
+        }
+        
+        if imageData.count > 1{
+            loadScrollViewWithZoomingPage(imageData.count+2, imageData[0] as! Data, 0)
+            loadScrollViewWithZoomingPage(1, imageData[imageData.count-1] as! Data, imageData.count-1)
+            loadScrollViewWithZoomingPage(0, imageData[imageData.count-1] as! Data, imageData.count-1)
+            
+        }else{
+            zoomingPageControl.isHidden = true
+        }
+
+        if self.page == 0{
+            zoomingScrollView.contentOffset = CGPoint(x: zoomingScrollView.frame.width*2, y: 0)
+        }else if page == 1{
+            zoomingScrollView.contentOffset = CGPoint(x: zoomingScrollView.frame.width*3, y: 0)
+        }else if page == 2{
+            zoomingScrollView.contentOffset = CGPoint(x: zoomingScrollView.frame.width*4, y: 0)
+        }else if page == 3{
+            zoomingScrollView.contentOffset = CGPoint(x: zoomingScrollView.frame.width*5, y: 0)
+        }
+        
+//        let zoomingImageView = UIImageView(frame: startingFrame!)
+//        zoomingImageView.backgroundColor = UIColor.clear
+//        zoomingImageView.layer.cornerRadius = 10
+//        zoomingImageView.clipsToBounds = true
+//        zoomingImageView.image = startingImageView.image
+//        zoomingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleZoomOut)))
+//        zoomingImageView.isUserInteractionEnabled = true
         if let keyWindow = UIApplication.shared.keyWindow{
             keyWindow.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+           
+
             blackBackgroundView = UIView(frame: keyWindow.frame)
             blackBackgroundView?.backgroundColor = UIColor.black
             blackBackgroundView?.alpha = 0 //開始時會看不見
+            zoomingPageControl.alpha = 0
             keyWindow.addSubview(blackBackgroundView!) //這行程式碼在前，所以blackBackgroundView會在zoomingImageView之後呈現
-            keyWindow.addSubview(zoomingImageView)
+            
+            keyWindow.addSubview(zoomingScrollView)
+//            keyWindow.addSubview(zoomingPageControl)
+            
             
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.blackBackgroundView?.alpha = 1 //從0->1，有動畫漸層效果
+                self.zoomingPageControl.alpha = 1
                 //math?
                 // h2/w2 = h1/w1
                 // h2 = h1 / w1 * w2
@@ -424,9 +535,11 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
                 }
                 
                 //keyWindow是整個app的view
-                zoomingImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+//                zoomingImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
+
+//                zoomingImageView.center = keyWindow.center
                 
-                zoomingImageView.center = keyWindow.center
+                self.zoomingScrollView.center = keyWindow.center
                 
                 
             }, completion: { (completed) in
@@ -440,49 +553,40 @@ class SavingInfoViewController: UICollectionViewController, UICollectionViewDele
     
     func handleZoomOut(tapGesture: UITapGestureRecognizer){
         if let zoomOutImageView = tapGesture.view{
+            
+            if self.page == 0{
+                self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.width*2, y: 0)
+            }else if self.page == 1{
+                self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.width*3, y: 0)
+            }else if self.page == 2{
+                self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.width*4, y: 0)
+            }else if self.page == 3{
+                self.scrollView.contentOffset = CGPoint(x: self.scrollView.frame.width*5, y: 0)
+            }
+
             //need to animate back out to controller
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 2, options: .curveEaseOut, animations: {
                 zoomOutImageView.layer.cornerRadius = 10
                 zoomOutImageView.clipsToBounds = true
                 zoomOutImageView.frame = self.startingFrame!
-                self.blackBackgroundView?.alpha = 0
+                
+                
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (timer) in
+                    self.blackBackgroundView?.alpha = 0
+                    self.zoomingPageControl.alpha = 0
+                   
+                })
+
             }, completion: { (completed: Bool) in
+                self.zoomingScrollView.removeFromSuperview()
                 zoomOutImageView.removeFromSuperview()
+                for i in 2...self.imageData.count+1{
+                    self.removeScrollViewWithPage(page: i)
+                }
                 self.startingImageView?.isHidden = false
             })
             
         }
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }

@@ -81,7 +81,6 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
     // MARK: - FetchRequest
     func setupFetchRequest(){
         let fetchRequest: NSFetchRequest<AnimalM> = AnimalM.fetchRequest()
-        
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         if let appDelegate = (UIApplication.shared.delegate as? AppDelegate){
@@ -99,8 +98,6 @@ class SavingController: UITableViewController, NSFetchedResultsControllerDelegat
                 print(error)
             }
         }
-
-       
     }
     
     // MARK: - NSFetchedResultControllerDelegate

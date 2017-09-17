@@ -63,12 +63,9 @@ extension UIImageView{
             }
             DispatchQueue.main.async {
                 if let downloadedImage = UIImage(data: data!){
-                    //將image裝進cache，可不用重複下載
-                    imageCache.setObject(downloadedImage, forKey: urlString as AnyObject)
                     
                     self.image = downloadedImage
                 }
-                
                 
             }
             

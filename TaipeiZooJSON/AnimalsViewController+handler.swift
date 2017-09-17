@@ -68,7 +68,7 @@ func firebaseUploadWithImage(numbers: Int,dictionary: [Dictionary<String, Any>])
                     }
             DispatchQueue.main.async {
                 if let downloadedImage = UIImage(data: data!){
-                    if let uploadData = UIImageJPEGRepresentation(downloadedImage, 0.05){
+                    if let uploadData = UIImageJPEGRepresentation(downloadedImage, 0.3){
 //                        let imageName = NSUUID().uuidString
                         let imageName = i
                         let storageRef = FIRStorage.storage().reference().child("animal_images").child("\(index)").child("\(imageName).jpg")

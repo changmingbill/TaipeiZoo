@@ -68,6 +68,8 @@ class InformationViewController: UICollectionViewController, UICollectionViewDel
         }
     }
     
+    //MARK: saveToCoredata
+    
     func saveToCoredata(animal: Animal){
         if let appDelegate = (UIApplication.shared.delegate as? AppDelegate){
             self.animalM = AnimalM(context: appDelegate.persistentContainer.viewContext)
